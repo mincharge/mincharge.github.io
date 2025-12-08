@@ -483,13 +483,22 @@
           </div>
         </div>
 
-        <div style="margin-top: 20px; display:flex; align-items:center; gap:12px; flex-wrap:wrap">
-          <div class="toggle" role="tablist" aria-label="Billing options">
-            <button class="active" data-plan="rent" role="tab" aria-selected="true">Fixed rent</button>
-            <button data-plan="unit" role="tab" aria-selected="false">Per‑kWh</button>
-            <button data-plan="hybrid" role="tab" aria-selected="false">Hybrid</button>
+        <!-- AC vs DC model specifics -->
+        <div class="grid-3" style="grid-template-columns: 1fr 1fr; margin-top:16px">
+          <div class="card reveal">
+            <div class="row">
+              <div class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M6 7h7l2 2h3v8H6z" stroke="#74ffd7" stroke-width="1.8"/></svg></div>
+              <h3>AC (slow) — amenity model</h3>
+            </div>
+            <p class="muted">For residents and employees. Building pays MinCharge a fixed monthly rent plus an operating charge (e.g., ₹2/kWh). Residents are billed near the building’s electricity tariff. No profit intent for building owners—focus on being EV‑friendly.</p>
           </div>
-          <div class="pricing-note" id="plan-note">Predictable monthly income regardless of utilization.</div>
+          <div class="card reveal">
+            <div class="row">
+              <div class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="4" y="6" width="16" height="12" rx="2" stroke="#8a5cff" stroke-width="1.8"/><path d="M8 10h8M8 14h6" stroke="#74ffd7" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+              <h3>DC (fast) — pegged tariff</h3>
+            </div>
+            <p class="muted">For public‑facing, high‑turnover sites. Users pay a pegged ₹24/kWh. MinCharge receives ₹8/kWh; the remainder covers your power cost and potential margin.</p>
+          </div>
         </div>
       </div>
     </section>
@@ -530,7 +539,7 @@
           <div class="card reveal tilt">
             <div class="row">
               <div class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2 3 14h7l-1 8 10-12h-7l1-8Z" stroke="#8a5cff" stroke-width="1.5"/></svg></div>
-              <h3>Operations & SLA</h3>
+            <h3>Operations & SLA</h3>
             </div>
             <p>Proactive monitoring, field service network, and guaranteed uptime with round‑the‑clock support.</p>
           </div>
@@ -583,75 +592,114 @@
 
     <section id="calculator">
       <div class="container">
-        <div class="eyebrow">Quick estimator</div>
-        <h2 class="title">Estimate monthly revenue and energy</h2>
-        <div class="calc">
+        <div class="eyebrow">Quick estimators</div>
+        <h2 class="title">Separate calculations for AC (slow) and DC (fast)</h2>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px">
+          <!-- AC Calculator -->
           <div class="card reveal">
-            <div class="stack">
+            <h3>AC (slow) — amenity model</h3>
+            <p class="small muted">Building pays MinCharge: fixed monthly rent + ₹2/kWh operating charge. Residents are billed near the building’s tariff. No owner profit intended.</p>
+            <div class="stack" style="margin-top:10px">
               <div class="field">
-                <label for="stalls">Number of chargers</label>
-                <input id="stalls" type="number" min="1" max="50" value="6" />
+                <label for="ac-stalls">Number of AC chargers</label>
+                <input id="ac-stalls" type="number" min="1" max="100" value="6" />
               </div>
               <div class="field">
-                <label for="util">Average daily sessions per charger</label>
-                <input id="util" type="number" min="0.1" step="0.1" value="3.0" />
+                <label for="ac-util">Average daily sessions per AC charger</label>
+                <input id="ac-util" type="number" min="0" step="0.1" value="2.5" />
               </div>
               <div class="field">
-                <label for="kwh">Average kWh per session</label>
-                <input id="kwh" type="number" min="1" step="0.5" value="12" />
+                <label for="ac-kwh">Average kWh per AC session</label>
+                <input id="ac-kwh" type="number" min="1" step="0.5" value="10" />
               </div>
               <div class="field">
-                <label for="rate">Tariff (₹/kWh) billed to users</label>
-                <input id="rate" type="number" min="1" step="0.5" value="14" />
+                <label for="ac-tariff">Building electricity tariff (₹/kWh)</label>
+                <input id="ac-tariff" type="number" min="1" step="0.5" value="8" />
               </div>
               <div class="field">
-                <label for="share">Owner share (₹/kWh) or (₹/month rent)</label>
-                <input id="share" type="number" min="0" step="0.5" value="2.0" />
+                <label for="ac-ops">Operating charge to MinCharge (₹/kWh)</label>
+                <input id="ac-ops" type="number" min="0" step="0.5" value="2" />
               </div>
               <div class="field">
-                <label for="model-select">Model</label>
-                <select id="model-select">
-                  <option value="per">Per‑kWh share</option>
-                  <option value="rent">Fixed monthly rent</option>
-                  <option value="hybrid">Hybrid (rent + per‑kWh)</option>
-                </select>
+                <label for="ac-rent">Monthly rent to MinCharge (₹)</label>
+                <input id="ac-rent" type="number" min="0" step="500" value="20000" />
               </div>
-              <div class="field" id="rent-field" style="display:none">
-                <label for="rent">Monthly rent (₹)</label>
-                <input id="rent" type="number" min="0" step="500" value="20000" />
+            </div>
+            <div class="result" style="margin-top:12px; grid-template-columns: 1fr 1fr">
+              <div class="kpi">
+                <div class="muted">Monthly energy</div>
+                <b id="ac-out-energy">— kWh</b>
+              </div>
+              <div class="kpi">
+                <div class="muted">Residents pay (near‑actuals)</div>
+                <b id="ac-out-users">₹ —</b>
+              </div>
+              <div class="kpi">
+                <div class="muted">Service fee to MinCharge</div>
+                <b id="ac-out-fee">₹ —</b>
+              </div>
+              <div class="kpi">
+                <div class="muted">Owner monthly amenity cost</div>
+                <b id="ac-out-owner">₹ —</b>
               </div>
             </div>
           </div>
+
+          <!-- DC Calculator -->
           <div class="card reveal">
-            <div class="result">
+            <h3>DC (fast) — ₹24/kWh tariff, ₹8/kWh to MinCharge</h3>
+            <p class="small muted">Users pay ₹24/kWh. MinCharge receives ₹8/kWh. The remainder covers your power cost and potential margin.</p>
+            <div class="stack" style="margin-top:10px">
+              <div class="field">
+                <label for="dc-stalls">Number of DC chargers</label>
+                <input id="dc-stalls" type="number" min="0" max="50" value="2" />
+              </div>
+              <div class="field">
+                <label for="dc-util">Average daily sessions per DC charger</label>
+                <input id="dc-util" type="number" min="0" step="0.1" value="6" />
+              </div>
+              <div class="field">
+                <label for="dc-kwh">Average kWh per DC session</label>
+                <input id="dc-kwh" type="number" min="1" step="0.5" value="18" />
+              </div>
+              <div class="field">
+                <label for="dc-tariff">Building electricity tariff (₹/kWh)</label>
+                <input id="dc-tariff" type="number" min="1" step="0.5" value="9" />
+              </div>
+              <div class="field">
+                <label>Tariff to users (₹/kWh)</label>
+                <input value="24" disabled />
+              </div>
+              <div class="field">
+                <label>MinCharge share (₹/kWh)</label>
+                <input value="8" disabled />
+              </div>
+            </div>
+            <div class="result" style="margin-top:12px; grid-template-columns: 1fr 1fr">
               <div class="kpi">
                 <div class="muted">Monthly energy</div>
-                <b id="out-energy">— kWh</b>
+                <b id="dc-out-energy">— kWh</b>
               </div>
               <div class="kpi">
                 <div class="muted">Gross user revenue</div>
-                <b id="out-gross">₹ —</b>
+                <b id="dc-out-gross">₹ —</b>
               </div>
               <div class="kpi">
-                <div class="muted">Owner earnings</div>
-                <b id="out-owner">₹ —</b>
+                <div class="muted">MinCharge earnings</div>
+                <b id="dc-out-company">₹ —</b>
               </div>
               <div class="kpi">
-                <div class="muted">Avg daily sessions</div>
-                <b id="out-sessions">—</b>
+                <div class="muted">Owner power cost</div>
+                <b id="dc-out-power">₹ —</b>
               </div>
               <div class="kpi">
-                <div class="muted">Per charger energy (mo)</div>
-                <b id="out-percharger">— kWh</b>
-              </div>
-              <div class="kpi">
-                <div class="muted">Model</div>
-                <b id="out-model">—</b>
+                <div class="muted">Owner net</div>
+                <b id="dc-out-owner">₹ —</b>
               </div>
             </div>
-            <p class="small" style="margin-top:12px">This estimator is indicative only. Actual performance depends on property profile, traffic, rates, and utilization.</p>
           </div>
         </div>
+        <p class="small" style="margin-top:12px">Estimates are indicative. Actuals depend on utilization, tariff, and property profile.</p>
       </div>
     </section>
 
@@ -665,8 +713,12 @@
             <p>MinCharge invests the upfront capital for charging equipment, networking, and software. The building provides an electrical connection.</p>
           </details>
           <details class="reveal">
-            <summary>How is the electricity billed?</summary>
-            <p>All charging energy is metered by us. Tenants or visitors pay by app or RFID. We settle with the building under the chosen model: rent, per‑kWh, or hybrid.</p>
+            <summary>How is AC (slow) charging billed?</summary>
+            <p>Residents are billed near the building’s electricity tariff (via app or RFID). The building pays MinCharge a fixed monthly rent plus an operating charge (e.g., ₹2/kWh). This is positioned as an amenity — no profit intent for building owners.</p>
+          </details>
+          <details class="reveal">
+            <summary>How is DC (fast) charging billed?</summary>
+            <p>Users pay a pegged tariff of ₹24/kWh. MinCharge receives ₹8/kWh; the remainder covers your power cost and potential margin.</p>
           </details>
           <details class="reveal">
             <summary>Do you support RFID without wallets?</summary>
@@ -802,56 +854,65 @@
       card.addEventListener('mouseenter', () => { bounds = null; });
     });
 
-    // Billing toggle copy
-    const note = document.getElementById('plan-note');
-    document.querySelectorAll('.toggle button').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.toggle button').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        const plan = btn.dataset.plan;
-        if (plan === 'rent') note.textContent = 'Predictable monthly income regardless of utilization.';
-        if (plan === 'unit') note.textContent = 'Earn on every kWh delivered—aligned with actual usage.';
-        if (plan === 'hybrid') note.textContent = 'A balanced model: base rent plus per‑kWh upside.';
-      });
-    });
-
-    // Simple ROI calculator
+    // Helper
     const $ = (id) => document.getElementById(id);
-    const inputs = ['stalls','util','kwh','rate','share','model-select','rent','rent-field'].reduce((acc,k)=> (acc[k]=$(k),acc),{});
-    const outs = ['out-energy','out-gross','out-owner','out-sessions','out-percharger','out-model'].reduce((acc,k)=> (acc[k]=$(k),acc),{});
-    function fmtMoney(n){ return '₹ ' + (Math.round(n).toLocaleString('en-IN')); }
-    function updateCalc(){
-      const stalls = Math.max(1, Number(inputs['stalls'].value||0));
-      const util = Math.max(0, Number(inputs['util'].value||0));
-      const kwh = Math.max(0, Number(inputs['kwh'].value||0));
-      const rate = Math.max(0, Number(inputs['rate'].value||0));
-      const share = Math.max(0, Number(inputs['share'].value||0));
-      const model = inputs['model-select'].value;
-      const rent = Math.max(0, Number(inputs['rent'].value||0));
+    const moneyINR = (n) => '₹ ' + (Math.round(n).toLocaleString('en-IN'));
+
+    // AC calculator
+    function updateAC(){
+      const stalls = Math.max(0, +$('ac-stalls').value || 0);
+      const util = Math.max(0, +$('ac-util').value || 0);
+      const kwh = Math.max(0, +$('ac-kwh').value || 0);
+      const tariff = Math.max(0, +$('ac-tariff').value || 0);
+      const ops = Math.max(0, +$('ac-ops').value || 0);
+      const rent = Math.max(0, +$('ac-rent').value || 0);
 
       const days = 30;
-      const sessionsPerDay = stalls * util;
-      const monthlySessions = sessionsPerDay * days;
-      const monthlyEnergy = monthlySessions * kwh; // kWh
-      const gross = monthlyEnergy * rate;
+      const monthlyEnergy = stalls * util * days * kwh;
+      const residentsPay = monthlyEnergy * tariff; // near-actuals
+      const serviceFee = rent + (monthlyEnergy * ops);
+      const ownerAmenityCost = serviceFee; // owner bears service fee
 
-      let owner = 0; let modelText = '';
-      if (model === 'per'){ owner = monthlyEnergy * share; modelText = `Per‑kWh @ ₹${share}/kWh`; inputs['rent-field'].style.display='none'; }
-      if (model === 'rent'){ owner = rent; modelText = `Fixed rent ₹${rent}/mo`; inputs['rent-field'].style.display='block'; }
-      if (model === 'hybrid'){ owner = rent + (monthlyEnergy * share); modelText = `Hybrid: ₹${rent}/mo + ₹${share}/kWh`; inputs['rent-field'].style.display='block'; }
-
-      outs['out-energy'].textContent = Math.round(monthlyEnergy).toLocaleString('en-IN') + ' kWh';
-      outs['out-gross'].textContent = fmtMoney(gross);
-      outs['out-owner'].textContent = fmtMoney(owner);
-      outs['out-sessions'].textContent = Math.round(sessionsPerDay) + '/day';
-      outs['out-percharger'].textContent = Math.round((monthlyEnergy / stalls)).toLocaleString('en-IN') + ' kWh';
-      outs['out-model'].textContent = modelText;
+      $('ac-out-energy').textContent = Math.round(monthlyEnergy).toLocaleString('en-IN') + ' kWh';
+      $('ac-out-users').textContent = moneyINR(residentsPay);
+      $('ac-out-fee').textContent = moneyINR(serviceFee);
+      $('ac-out-owner').textContent = moneyINR(ownerAmenityCost);
     }
-    ['input','change'].forEach(ev => {
-      ['stalls','util','kwh','rate','share','model-select','rent'].forEach(id => inputs[id].addEventListener(ev, updateCalc));
+
+    // DC calculator
+    function updateDC(){
+      const stalls = Math.max(0, +$('dc-stalls').value || 0);
+      const util = Math.max(0, +$('dc-util').value || 0);
+      const kwh = Math.max(0, +$('dc-kwh').value || 0);
+      const tariff = Math.max(0, +$('dc-tariff').value || 0);
+      const days = 30;
+
+      const monthlyEnergy = stalls * util * days * kwh;
+      const userTariff = 24;
+      const companyShare = 8;
+
+      const gross = monthlyEnergy * userTariff;
+      const company = monthlyEnergy * companyShare;
+      const powerCost = monthlyEnergy * tariff;
+      const ownerNet = monthlyEnergy * (userTariff - companyShare - tariff);
+
+      $('dc-out-energy').textContent = Math.round(monthlyEnergy).toLocaleString('en-IN') + ' kWh';
+      $('dc-out-gross').textContent = moneyINR(gross);
+      $('dc-out-company').textContent = moneyINR(company);
+      $('dc-out-power').textContent = moneyINR(powerCost);
+      $('dc-out-owner').textContent = moneyINR(ownerNet);
+    }
+
+    // Wire events
+    ['ac-stalls','ac-util','ac-kwh','ac-tariff','ac-ops','ac-rent'].forEach(id=>{
+      const el = $(id); if (el){ el.addEventListener('input', updateAC); el.addEventListener('change', updateAC); }
     });
-    // initialize
-    updateCalc();
+    ['dc-stalls','dc-util','dc-kwh','dc-tariff'].forEach(id=>{
+      const el = $(id); if (el){ el.addEventListener('input', updateDC); el.addEventListener('change', updateDC); }
+    });
+
+    // Init
+    updateAC(); updateDC();
 
     // Smooth anchor scroll
     document.querySelectorAll('a[href^="#"]').forEach(a=>{
