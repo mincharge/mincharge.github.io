@@ -1,0 +1,893 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>MinCharge Ventures — EV Charging for Apartments & Offices</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0b0f15" />
+  <meta name="description" content="MinCharge Ventures provides turnkey EV charging installation and operations for small to medium apartment and office buildings. Zero capex options, flexible billing, end-to-end operations." />
+  <meta property="og:title" content="MinCharge Ventures — EV Charging for Apartments & Offices" />
+  <meta property="og:description" content="Turnkey EV charging. We invest, install, operate. You earn rent and/or power fees. App & RFID billing. Perfect for apartments, offices, restaurants, and business hubs." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='1200' height='630'><rect width='100%25' height='100%25' fill='%230b0f15'/><text x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%2300ffa3' font-family='Segoe UI, Roboto, Arial' font-size='64'>MinCharge Ventures</text></svg>" />
+
+  <style>
+    :root{
+      --bg: #0b0f15;
+      --bg-soft: #0e131b;
+      --panel: #0f1623;
+      --text: #e8eef9;
+      --muted: #9bb0c9;
+      --primary: #00ffa3;
+      --primary-2: #6e7dff;
+      --accent: #8a5cff;
+      --danger: #ff3d6e;
+      --ring: 0 0 0 2px color-mix(in oklab, var(--primary) 35%, transparent);
+      --shadow-1: 0 10px 40px color-mix(in oklab, black 30%, transparent);
+      --radius: 16px;
+      --radius-sm: 12px;
+      --radius-lg: 24px;
+      --maxw: 1200px;
+      --grad-1: conic-gradient(from 180deg at 50% 50%, #0f1623, #111a2b, #0b0f15);
+      --grad-2: radial-gradient(1200px 600px at 100% 0%, rgba(110,125,255,.15), transparent 50%),
+                radial-gradient(900px 600px at 0% 100%, rgba(0,255,163,.15), transparent 55%);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color:var(--text);
+      background:
+        radial-gradient(900px 600px at -10% -10%, rgba(138,92,255,.18), transparent 35%),
+        radial-gradient(900px 800px at 110% 110%, rgba(0,255,163,.18), transparent 45%),
+        var(--grad-1);
+      background-color: var(--bg);
+      letter-spacing: 0.2px;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    a{color:var(--primary); text-decoration: none}
+    a:hover{text-decoration: underline}
+    .container{width:100%; max-width: var(--maxw); margin:0 auto; padding: 0 24px}
+    header{
+      position: sticky; top: 0; z-index: 50;
+      backdrop-filter: saturate(140%) blur(10px);
+      background: linear-gradient(to bottom, rgba(11,15,21,.8), rgba(11,15,21,.35));
+      border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+    .nav{
+      display:flex; align-items:center; justify-content:space-between; gap:16px;
+      padding: 14px 0;
+    }
+    .brand{
+      display:flex; align-items:center; gap:12px; font-weight: 700; letter-spacing:.3px;
+    }
+    .brand .logo{
+      width:34px; height:34px; display:grid; place-items:center;
+      border-radius: 10px;
+      background: linear-gradient(135deg, rgba(0,255,163,.18), rgba(110,125,255,.18));
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.06), 0 6px 30px rgba(0,0,0,.35);
+    }
+    .brand span{font-size: 1.05rem}
+    .nav-links{
+      display:flex; gap: 20px; align-items:center; flex-wrap: wrap;
+    }
+    .nav-links a{
+      color: var(--text); opacity:.92; font-size:.95rem;
+      padding:10px 12px; border-radius: 10px;
+    }
+    .nav-links a:hover{background:rgba(255,255,255,.06)}
+    .cta{
+      background: linear-gradient(135deg, var(--primary), #2cffd2);
+      color:#07130e; font-weight: 700; border:none; border-radius: 12px;
+      padding: 10px 16px; cursor: pointer; box-shadow: 0 10px 30px rgba(0,255,163,.25);
+    }
+    .cta.secondary{
+      background: linear-gradient(135deg, rgba(110,125,255,.25), rgba(138,92,255,.25));
+      color: var(--text); border: 1px solid rgba(255,255,255,.08);
+      box-shadow: none;
+    }
+    /* hero */
+    .hero{position: relative; overflow: clip;}
+    .hero .grid{
+      display:grid; grid-template-columns: 1.1fr .9fr; gap:40px; align-items:center;
+      padding: 72px 0 32px;
+    }
+    @media (max-width: 980px){
+      .hero .grid{grid-template-columns: 1fr; padding: 48px 0 16px;}
+    }
+    .headline{
+      font-size: clamp(2rem, 4.5vw, 3.4rem);
+      line-height: 1.05; letter-spacing: .2px; margin: 8px 0 14px;
+      font-weight: 800;
+      background: linear-gradient(180deg, #e8eef9, #b8c6dd 60%, #a4b3cd);
+      background-clip: text; -webkit-background-clip: text; color: transparent;
+      text-shadow: 0 2px 16px rgba(110,125,255,.15);
+    }
+    .headline strong{
+      background: linear-gradient(135deg, var(--primary), #8a5cff 85%);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+      filter: drop-shadow(0 6px 24px rgba(0,255,163,.25));
+    }
+    .sub{
+      color: var(--muted); font-size: clamp(1rem, 2vw, 1.15rem); margin-bottom: 22px;
+    }
+    .hero-cta{display:flex; gap:12px; flex-wrap: wrap; align-items:center}
+    .statbar{
+      margin-top: 20px; display:flex; gap:18px; flex-wrap: wrap; align-items:center;
+      color: var(--muted); font-size: .95rem;
+    }
+    .pill{
+      display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border-radius: 999px;
+      background: rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08);
+    }
+    .phone{
+      aspect-ratio: 10/17; width: min(420px, 92%); justify-self:end;
+      border-radius: 36px; position: relative; overflow: hidden;
+      background: linear-gradient(180deg, #111827, #0b0f15);
+      border: 1px solid rgba(255,255,255,.12);
+      box-shadow: inset 0 0 60px rgba(255,255,255,.04), 0 20px 120px rgba(0,0,0,.6), 0 0 0 12px rgba(255,255,255,.03);
+    }
+    .phone .screen{
+      position:absolute; inset:16px; border-radius: 26px; overflow: hidden;
+      background: linear-gradient(180deg, #0f1725, #0b1220);
+      border: 1px solid rgba(255,255,255,.06);
+    }
+    .ui{
+      position:absolute; inset:0; padding:18px; display:flex; flex-direction:column; gap:14px;
+      color: #d8e6ff;
+      font-size: 12px;
+    }
+    .ui .row{display:flex; gap:10px}
+    .ui .chip{
+      flex:1; padding:10px; border-radius: 12px; background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.07);
+    }
+    .ui .meter{
+      height: 10px; border-radius: 999px; background: rgba(255,255,255,.06);
+      overflow: hidden; position: relative;
+    }
+    .ui .meter span{
+      position:absolute; inset:0; width: 66%; background: linear-gradient(90deg, var(--primary), #74ffd7);
+      box-shadow: 0 0 20px rgba(0,255,163,.35) inset;
+    }
+    .glow-orb{
+      position:absolute; width: 900px; height: 900px; border-radius: 9999px; filter: blur(80px);
+      background: radial-gradient(circle at 40% 40%, rgba(110,125,255,.2), transparent 50%),
+                  radial-gradient(circle at 60% 60%, rgba(0,255,163,.22), transparent 50%);
+      top: -380px; right: -420px; pointer-events: none; opacity:.7;
+      transform: translateZ(0);
+      animation: float 14s ease-in-out infinite alternate;
+    }
+    @keyframes float{
+      from{ transform: translate(0, 0) }
+      to{ transform: translate(-40px, 20px) }
+    }
+
+    /* sections */
+    section{padding: 56px 0}
+    .eyebrow{
+      display:inline-flex; gap:8px; align-items:center;
+      color: var(--muted); font-weight: 600; letter-spacing:.4px; text-transform: uppercase;
+      font-size: .78rem; margin-bottom: 8px;
+    }
+    .title{
+      font-size: clamp(1.6rem, 3vw, 2.2rem); margin: 6px 0 14px; line-height: 1.15; font-weight: 800;
+    }
+    .muted{color:var(--muted)}
+    .grid-3{
+      display:grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+    }
+    @media (max-width: 980px){ .grid-3{grid-template-columns: 1fr} }
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.04));
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: var(--radius);
+      padding: 18px; position: relative; overflow: hidden;
+      box-shadow: var(--shadow-1);
+      transform-style: preserve-3d;
+      transition: transform .25s ease, box-shadow .25s ease, background .25s ease;
+    }
+    .card:hover{ box-shadow: 0 18px 60px rgba(0,0,0,.45) }
+    .icon{
+      width: 42px; height: 42px; border-radius: 12px; display:grid; place-items:center; flex: none;
+      background: linear-gradient(135deg, rgba(0,255,163,.18), rgba(110,125,255,.18));
+      border: 1px solid rgba(255,255,255,.1);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.04);
+    }
+    .card h3{margin: 12px 0 8px; font-size: 1.15rem}
+    .card p{margin:0; color: var(--muted)}
+    .stack{display:flex; flex-direction:column; gap:10px}
+    .row{display:flex; align-items:center; gap:12px}
+
+    /* badges */
+    .badges{display:flex; gap:10px; flex-wrap:wrap; margin-top: 10px}
+    .badge{
+      font-size:.85rem; color: var(--text); opacity:.9; padding: 8px 10px; border-radius: 999px;
+      background: rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.08);
+    }
+
+    /* working model */
+    .steps{display:grid; grid-template-columns: repeat(4, 1fr); gap:14px}
+    @media (max-width: 980px){ .steps{grid-template-columns: 1fr; } }
+    .step{position:relative; padding: 16px; border-radius: var(--radius); background: rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.08)}
+    .step .n{
+      position:absolute; top:12px; right: 12px; font-weight:700; color: var(--muted); font-size:.9rem;
+      background: rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.08); padding:4px 8px; border-radius: 999px;
+    }
+    .toggle{
+      display:inline-flex; border-radius:999px; border:1px solid rgba(255,255,255,.1); overflow:hidden;
+      background: rgba(255,255,255,.06);
+    }
+    .toggle button{
+      background: transparent; color: var(--text); opacity:.8; padding: 8px 14px; border:0; cursor:pointer; font-weight:600
+    }
+    .toggle button.active{
+      background: linear-gradient(135deg, rgba(0,255,163,.25), rgba(110,125,255,.25));
+      opacity:1
+    }
+    .pricing-note{color: var(--muted); margin-top: 8px; font-size:.95rem}
+
+    /* solutions */
+    .solutions{display:grid; grid-template-columns: repeat(3, 1fr); gap: 14px}
+    @media (max-width: 980px){ .solutions{grid-template-columns: 1fr} }
+    .solutions .card h4{margin: 8px 0 6px}
+
+    /* calculator */
+    .calc{
+      display:grid; grid-template-columns: 1.2fr .8fr; gap: 16px;
+    }
+    @media (max-width: 980px){ .calc{grid-template-columns: 1fr} }
+    .field{display:flex; flex-direction:column; gap:6px}
+    .field input, .field select{
+      background: rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12);
+      padding: 10px 12px; border-radius: 12px; color: var(--text)
+    }
+    .result{
+      display:grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+    }
+    @media (max-width: 680px){ .result{grid-template-columns: 1fr 1fr} }
+    .kpi{
+      padding: 14px; border-radius: var(--radius-sm);
+      background: linear-gradient(135deg, rgba(0,255,163,.1), rgba(110,125,255,.1));
+      border:1px solid rgba(255,255,255,.12);
+    }
+    .kpi b{display:block; font-size: 1.3rem; margin-top: 4px}
+
+    /* faq */
+    .faq{display:grid; grid-template-columns: 1fr 1fr; gap: 14px}
+    @media (max-width: 980px){ .faq{grid-template-columns: 1fr} }
+    details{
+      background: rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius: 12px; padding: 12px 14px;
+    }
+    details[open]{background: rgba(255,255,255,.07)}
+    summary{cursor:pointer; font-weight: 600}
+    summary::-webkit-details-marker{display:none}
+    .faq p{margin: 8px 0 0; color: var(--muted)}
+
+    /* footer */
+    footer{
+      border-top: 1px solid rgba(255,255,255,.08);
+      background: linear-gradient(180deg, rgba(11,15,21,.75), rgba(11,15,21,.95));
+      padding: 28px 0 60px;
+    }
+    .fgrid{display:grid; grid-template-columns: .9fr .6fr .6fr; gap: 14px}
+    @media (max-width: 980px){ .fgrid{grid-template-columns: 1fr} }
+    .small{font-size:.95rem; color: var(--muted)}
+    .contact a{display:inline-flex; align-items:center; gap:8px; padding:8px 10px; border-radius: 10px; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.08)}
+
+    /* reveal animations */
+    .reveal{
+      opacity: 0; transform: translateY(16px) scale(.98);
+      will-change: transform, opacity; transition: opacity .6s ease, transform .6s ease;
+    }
+    .reveal.visible{ opacity:1; transform: none }
+
+    /* focus & accessibility */
+    :focus-visible{ outline: none; box-shadow: var(--ring) }
+    .sr-only{position:absolute; width:1px; height:1px; margin:-1px; border:0; padding:0; clip:rect(0 0 0 0); overflow:hidden}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">
+          <!-- lightning icon -->
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" role="img" aria-label="MinCharge logo">
+            <path d="M13 2 3 14h7l-1 8 10-12h-7l1-8Z" fill="url(#g)" stroke="rgba(255,255,255,.45)" stroke-width=".5" />
+            <defs>
+              <linearGradient id="g" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#00FFA3"/><stop offset="1" stop-color="#6E7DFF"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <span>MinCharge Ventures</span>
+      </div>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="#benefits">Benefits</a>
+        <a href="#model">How it works</a>
+        <a href="#capabilities">Capabilities</a>
+        <a href="#solutions">Solutions</a>
+        <a href="#calculator">ROI</a>
+        <a href="#faq">FAQ</a>
+        <a href="#contact" class="cta">Get a proposal</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container grid">
+        <div>
+          <div class="eyebrow"><span aria-hidden="true">⚡</span> EV Charging for Apartments & Offices</div>
+          <h1 class="headline">
+            Power up your property with <strong>smart, zero‑capex</strong> EV charging.
+          </h1>
+          <p class="sub">
+            MinCharge Ventures designs, funds, installs, and operates EV charging for small to medium buildings.
+            We invest in the equipment, you provide an electrical connection. Flexible rent or per‑kWh models.
+            App or RFID billing. Fully managed, end‑to‑end.
+          </p>
+          <div class="hero-cta">
+            <a class="cta" href="#contact">Request a proposal</a>
+            <a class="cta secondary" href="#model">See how it works</a>
+          </div>
+          <div class="statbar">
+            <span class="pill"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2v6M6.2 6.2l4.2 4.2M2 12h6m9.8-5.8-4.2 4.2M12 22v-6m9-4h-6" stroke="#7bd5c0" stroke-width="2" stroke-linecap="round"/></svg> OCPP‑ready</span>
+            <span class="pill">App & RFID billing</span>
+            <span class="pill">Apartments, offices, restaurants, hubs</span>
+          </div>
+        </div>
+        <div class="phone reveal" aria-hidden="true">
+          <div class="glow-orb"></div>
+          <div class="screen">
+            <div class="ui">
+              <div class="row">
+                <div class="chip" style="flex:2">
+                  <b style="display:block; font-size:13px">Session • B2‑07</b>
+                  <div class="meter" aria-hidden="true"><span style="width:68%"></span></div>
+                </div>
+                <div class="chip">
+                  <div style="display:flex; align-items:center; gap:6px">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 7h7l2 2h3v8H6z" stroke="#9ec5ff" stroke-width="1.4"/></svg>
+                    <span>RFID</span>
+                  </div>
+                </div>
+              </div>
+              <div class="chip">
+                <div style="display:flex; align-items:center; justify-content:space-between">
+                  <div>
+                    <div style="opacity:.8">Energy</div>
+                    <b style="font-size:20px">18.6 kWh</b>
+                  </div>
+                  <div style="text-align:right">
+                    <div style="opacity:.8">Cost</div>
+                    <b style="font-size:20px">₹ 223</b>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="chip">
+                  <div style="display:flex; align-items:center; gap:6px"><span class="pill" style="background:rgba(0,255,163,.12); border-color:rgba(0,255,163,.3)">Live</span> Charger A‑03</div>
+                </div>
+                <div class="chip">
+                  <div class="meter" aria-hidden="true"><span style="width:42%"></span></div>
+                </div>
+              </div>
+              <div class="chip">
+                <div style="display:flex; gap:10px">
+                  <div class="pill" style="background: rgba(255,255,255,.06)">Start</div>
+                  <div class="pill" style="background: rgba(255,255,255,.06)">Stop</div>
+                  <div class="pill" style="background: rgba(255,255,255,.06)">Wallet</div>
+                </div>
+              </div>
+              <div style="margin-top:auto; display:flex; align-items:center; justify-content:center; gap:8px; color:#9ec5ff">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="6" stroke="#74ffd7" stroke-width="1.4"/><path d="M12 8v4l3 2" stroke="#74ffd7" stroke-width="1.4" stroke-linecap="round"/></svg>
+                <span>Smart load management active</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="benefits">
+      <div class="container">
+        <div class="eyebrow">Why MinCharge</div>
+        <h2 class="title">Benefits for building owners</h2>
+        <div class="grid-3">
+          <div class="card reveal tilt">
+            <div class="row">
+              <div class="icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 13c0-5 4-9 9-9h3" stroke="#74ffd7" stroke-width="2" stroke-linecap="round"/><path d="M12 3v6l5-2" stroke="#b2c6ff" stroke-width="2" stroke-linecap="round"/></svg>
+              </div>
+              <h3>Zero upfront capex</h3>
+            </div>
+            <p>We invest in chargers, networking, and software. You provide an electrical connection—simple.</p>
+            <div class="badges">
+              <span class="badge">Funded hardware</span>
+              <span class="badge">Accelerated deployment</span>
+            </div>
+          </div>
+          <div class="card reveal tilt">
+            <div class="row">
+              <div class="icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 7h11l3 3h2v10H4z" stroke="#9ec5ff" stroke-width="1.8"/><path d="M7 12h7M7 16h10" stroke="#74ffd7" stroke-width="1.8" stroke-linecap="round"/></svg>
+              </div>
+              <h3>Flexible, transparent billing</h3>
+            </div>
+            <p>Choose fixed rent, per‑kWh pricing, or a hybrid. We support app and RFID access with or without wallets.</p>
+            <div class="badges">
+              <span class="badge">App & RFID</span>
+              <span class="badge">Wallet optional</span>
+            </div>
+          </div>
+          <div class="card reveal tilt">
+            <div class="row">
+              <div class="icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M7 4h10a2 2 0 0 1 2 2v12l-7-3-7 3V6a2 2 0 0 1 2-2z" stroke="#8a5cff" stroke-width="1.8"/><path d="M9 8h6" stroke="#74ffd7" stroke-width="1.8" stroke-linecap="round"/></svg>
+              </div>
+              <h3>Turnkey operations</h3>
+            </div>
+            <p>We handle design, permits, installation, O&M, and 24/7 support—so you focus on tenants and guests.</p>
+            <div class="badges">
+              <span class="badge">Proactive monitoring</span>
+              <span class="badge">SLA-backed uptime</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="model">
+      <div class="container">
+        <div class="eyebrow">Working model</div>
+        <h2 class="title">We invest. You connect. Together we charge—and earn.</h2>
+        <div class="steps">
+          <div class="step reveal">
+            <span class="n">1</span>
+            <div class="row">
+              <div class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 12h16M12 4v16" stroke="#74ffd7" stroke-width="2" stroke-linecap="round"/></svg></div>
+              <h3>Power supply</h3>
+            </div>
+            <p class="muted">Building provides an electrical connection. We help assess load and plan upgrades if needed.</p>
+          </div>
+          <div class="step reveal">
+            <span class="n">2</span>
+            <div class="row">
+              <div class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="m10 3-3 7h4l-2 11 8-12h-5l2-6z" stroke="#9ec5ff" stroke-width="1.7" stroke-linejoin="round"/></svg></div>
+              <h3>Capex by MinCharge</h3>
+            </div>
+            <p class="muted">We fund chargers, networking, safety gear, signage, and software platform integration.</p>
+          </div>
+          <div class="step reveal">
+            <span class="n">3</span>
+            <div class="row">
+              <div class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M6 7h7l2 2h3v8H6z" stroke="#74ffd7" stroke-width="1.8"/><circle cx="9" cy="16" r="1.5" fill="#8a5cff"/><circle cx="16" cy="16" r="1.5" fill="#8a5cff"/></svg></div>
+              <h3>Operate & bill</h3>
+            </div>
+            <p class="muted">App or RFID access, metered energy, wallet or direct pay, invoicing, and reconciliations.</p>
+          </div>
+          <div class="step reveal">
+            <span class="n">4</span>
+            <div class="row">
+              <div class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 8h16v10H4z" stroke="#8a5cff" stroke-width="1.6"/><path d="M4 8V6a2 2 0 0 1 2-2h8" stroke="#74ffd7" stroke-width="1.6"/><path d="M8 13h8" stroke="#74ffd7" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+              <h3>Share revenue</h3>
+            </div>
+            <p class="muted">You receive fixed rent, per‑kWh margin, or both—aligned with your property strategy.</p>
+          </div>
+        </div>
+
+        <div style="margin-top: 20px; display:flex; align-items:center; gap:12px; flex-wrap:wrap">
+          <div class="toggle" role="tablist" aria-label="Billing options">
+            <button class="active" data-plan="rent" role="tab" aria-selected="true">Fixed rent</button>
+            <button data-plan="unit" role="tab" aria-selected="false">Per‑kWh</button>
+            <button data-plan="hybrid" role="tab" aria-selected="false">Hybrid</button>
+          </div>
+          <div class="pricing-note" id="plan-note">Predictable monthly income regardless of utilization.</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="capabilities">
+      <div class="container">
+        <div class="eyebrow">What we do</div>
+        <h2 class="title">Capabilities across the full EV charging lifecycle</h2>
+        <div class="grid-3">
+          <div class="card reveal tilt">
+            <div class="row">
+              <div class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M5 19V6a2 2 0 0 1 2-2h6l4 4v11a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2z" stroke="#9ec5ff" stroke-width="1.7"/><path d="M13 4v4h4" stroke="#74ffd7" stroke-width="1.7"/></svg></div>
+              <h3>Site survey & design</h3>
+            </div>
+            <p>Load study, layout, compliance, and future‑proofing with dynamic load management.</p>
+          </div>
+          <div class="card reveal tilt">
+            <div class="row">
+              <div class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M7 4h10a2 2 0 0 1 2 2v12l-7-3-7 3V6a2 2 0 0 1 2-2z" stroke="#8a5cff" stroke-width="1.7"/></svg></div>
+              <h3>Procurement & install</h3>
+            </div>
+            <p>Hardware‑agnostic AC/DC chargers, signage, trenching, and commissioning with safety top of mind.</p>
+          </div>
+          <div class="card reveal tilt">
+            <div class="row">
+              <div class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="16" height="16" rx="3" stroke="#74ffd7" stroke-width="1.7"/><path d="M8 12h8M12 8v8" stroke="#9ec5ff" stroke-width="1.7" stroke-linecap="round"/></svg></div>
+              <h3>Smart platform</h3>
+            </div>
+            <p>OCPP 1.6/2.0.1, remote diagnostics, firmware updates, user management, and open integrations.</p>
+          </div>
+          <div class="card reveal tilt">
+            <div class="row">
+              <div class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 7h11l3 3h2v10H4z" stroke="#9ec5ff" stroke-width="1.7"/><path d="M8 13h8M8 17h10" stroke="#74ffd7" stroke-width="1.7" stroke-linecap="round"/></svg></div>
+              <h3>Billing & wallets</h3>
+            </div>
+            <p>App‑based or RFID‑based access with or without dedicated wallets; GST invoices and settlements.</p>
+          </div>
+          <div class="card reveal tilt">
+            <div class="row">
+              <div class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2 3 14h7l-1 8 10-12h-7l1-8Z" stroke="#8a5cff" stroke-width="1.5"/></svg></div>
+              <h3>Operations & SLA</h3>
+            </div>
+            <p>Proactive monitoring, field service network, and guaranteed uptime with round‑the‑clock support.</p>
+          </div>
+          <div class="card reveal tilt">
+            <div class="row">
+              <div class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 10h6v10H4zM14 4h6v16h-6z" stroke="#74ffd7" stroke-width="1.7"/></svg></div>
+              <h3>Proven in restaurants & hubs</h3>
+            </div>
+            <p>Extensive experience deploying chargers at restaurants and business hubs with high, diverse demand.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="solutions">
+      <div class="container">
+        <div class="eyebrow">Where it fits</div>
+        <h2 class="title">Tailored solutions for your property type</h2>
+        <div class="solutions">
+          <div class="card reveal tilt">
+            <div class="row">
+              <div class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 20V9l8-5 8 5v11H4z" stroke="#9ec5ff" stroke-width="1.7"/><path d="M9 20v-6h6v6" stroke="#74ffd7" stroke-width="1.7"/></svg></div>
+              <div>
+                <h4>Apartments</h4>
+                <p class="muted">Resident‑friendly access and billing, assigned or shared bays, fair energy metering.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card reveal tilt">
+            <div class="row">
+              <div class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M6 20V6h12v14" stroke="#8a5cff" stroke-width="1.7"/><path d="M6 10h12M10 6v14" stroke="#74ffd7" stroke-width="1.7"/></svg></div>
+              <div>
+                <h4>Offices</h4>
+                <p class="muted">Employee and visitor charging with usage policies, reports, and sustainability metrics.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card reveal tilt">
+            <div class="row">
+              <div class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M3 8h18M5 8v11a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8" stroke="#9ec5ff" stroke-width="1.7"/><path d="M8 4h8l1 4H7l1-4z" stroke="#74ffd7" stroke-width="1.7"/></svg></div>
+              <div>
+                <h4>Restaurants & hubs</h4>
+                <p class="muted">High‑turnover scenarios with short sessions and peak‑time control—our specialty.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="calculator">
+      <div class="container">
+        <div class="eyebrow">Quick estimator</div>
+        <h2 class="title">Estimate monthly revenue and energy</h2>
+        <div class="calc">
+          <div class="card reveal">
+            <div class="stack">
+              <div class="field">
+                <label for="stalls">Number of chargers</label>
+                <input id="stalls" type="number" min="1" max="50" value="6" />
+              </div>
+              <div class="field">
+                <label for="util">Average daily sessions per charger</label>
+                <input id="util" type="number" min="0.1" step="0.1" value="3.0" />
+              </div>
+              <div class="field">
+                <label for="kwh">Average kWh per session</label>
+                <input id="kwh" type="number" min="1" step="0.5" value="12" />
+              </div>
+              <div class="field">
+                <label for="rate">Tariff (₹/kWh) billed to users</label>
+                <input id="rate" type="number" min="1" step="0.5" value="14" />
+              </div>
+              <div class="field">
+                <label for="share">Owner share (₹/kWh) or (₹/month rent)</label>
+                <input id="share" type="number" min="0" step="0.5" value="2.0" />
+              </div>
+              <div class="field">
+                <label for="model-select">Model</label>
+                <select id="model-select">
+                  <option value="per">Per‑kWh share</option>
+                  <option value="rent">Fixed monthly rent</option>
+                  <option value="hybrid">Hybrid (rent + per‑kWh)</option>
+                </select>
+              </div>
+              <div class="field" id="rent-field" style="display:none">
+                <label for="rent">Monthly rent (₹)</label>
+                <input id="rent" type="number" min="0" step="500" value="20000" />
+              </div>
+            </div>
+          </div>
+          <div class="card reveal">
+            <div class="result">
+              <div class="kpi">
+                <div class="muted">Monthly energy</div>
+                <b id="out-energy">— kWh</b>
+              </div>
+              <div class="kpi">
+                <div class="muted">Gross user revenue</div>
+                <b id="out-gross">₹ —</b>
+              </div>
+              <div class="kpi">
+                <div class="muted">Owner earnings</div>
+                <b id="out-owner">₹ —</b>
+              </div>
+              <div class="kpi">
+                <div class="muted">Avg daily sessions</div>
+                <b id="out-sessions">—</b>
+              </div>
+              <div class="kpi">
+                <div class="muted">Per charger energy (mo)</div>
+                <b id="out-percharger">— kWh</b>
+              </div>
+              <div class="kpi">
+                <div class="muted">Model</div>
+                <b id="out-model">—</b>
+              </div>
+            </div>
+            <p class="small" style="margin-top:12px">This estimator is indicative only. Actual performance depends on property profile, traffic, rates, and utilization.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="faq">
+      <div class="container">
+        <div class="eyebrow">FAQ</div>
+        <h2 class="title">Common questions</h2>
+        <div class="faq">
+          <details class="reveal">
+            <summary>Who pays for the equipment?</summary>
+            <p>MinCharge invests the upfront capital for charging equipment, networking, and software. The building provides an electrical connection.</p>
+          </details>
+          <details class="reveal">
+            <summary>How is the electricity billed?</summary>
+            <p>All charging energy is metered by us. Tenants or visitors pay by app or RFID. We settle with the building under the chosen model: rent, per‑kWh, or hybrid.</p>
+          </details>
+          <details class="reveal">
+            <summary>Do you support RFID without wallets?</summary>
+            <p>Yes. We support both app‑based and RFID‑based access, with or without dedicated wallets—ideal for residents, guests, and fleets.</p>
+          </details>
+          <details class="reveal">
+            <summary>What hardware do you support?</summary>
+            <p>We are hardware‑agnostic and OCPP‑native. We deploy AC and DC chargers matched to demand, with dynamic load management where needed.</p>
+          </details>
+          <details class="reveal">
+            <summary>Where have you deployed?</summary>
+            <p>Across apartments, offices, and especially restaurants and business hubs—where our network and experience enable high availability and utilization.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="container">
+        <div class="eyebrow">Get started</div>
+        <h2 class="title">Ready to power up your property?</h2>
+        <div class="grid-3">
+          <div class="card reveal">
+            <h3>Request a proposal</h3>
+            <p class="muted">Share your property details and preferred model. We’ll respond within 2 business days.</p>
+            <div class="stack" style="margin-top:10px">
+              <div class="field">
+                <label for="c-name">Your name</label>
+                <input id="c-name" placeholder="Jane Doe" />
+              </div>
+              <div class="field">
+                <label for="c-email">Email</label>
+                <input id="c-email" type="email" placeholder="you@company.com" />
+              </div>
+              <div class="field">
+                <label for="c-type">Property type</label>
+                <select id="c-type">
+                  <option>Apartment</option>
+                  <option>Office</option>
+                  <option>Restaurant</option>
+                  <option>Business hub</option>
+                  <option>Other</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="c-msg">Notes</label>
+                <input id="c-msg" placeholder="Parking bays, load available, timeline…" />
+              </div>
+              <button class="cta" id="c-send">Compose email</button>
+              <p class="small">This opens your email app with a pre‑filled message. No data is sent from this page.</p>
+            </div>
+          </div>
+          <div class="card reveal">
+            <h3>Contact</h3>
+            <p class="muted">Prefer to talk? We’re happy to help.</p>
+            <div class="stack contact" style="margin-top:10px">
+              <a href="mailto:hello@mincharge.ventures"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 7h16v10H4z" stroke="#9ec5ff"/><path d="m4 7 8 6 8-6" stroke="#74ffd7"/></svg> hello@mincharge.ventures</a>
+              <a href="tel:+911234567890"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 4h3l2 4-2 1a12 12 0 0 0 6 6l1-2 4 2v3a2 2 0 0 1-2 2c-8.8 0-16-7.2-16-16a2 2 0 0 1 2-2z" stroke="#74ffd7"/></svg> +91 12345 67890</a>
+            </div>
+          </div>
+          <div class="card reveal">
+            <h3>At a glance</h3>
+            <ul class="small">
+              <li>Zero capex options</li>
+              <li>App & RFID billing</li>
+              <li>Hardware‑agnostic (OCPP)</li>
+              <li>Operations & SLA</li>
+              <li>Restaurant & hub expertise</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container fgrid">
+      <div>
+        <div class="brand" style="margin-bottom:8px">
+          <div class="logo" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" role="img" aria-label=""><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8Z" fill="url(#g2)" stroke="rgba(255,255,255,.45)" stroke-width=".5" /><defs><linearGradient id="g2" x1="0" y1="0" x2="24" y2="24"><stop stop-color="#00FFA3"/><stop offset="1" stop-color="#6E7DFF"/></linearGradient></defs></svg>
+          </div>
+          <span>MinCharge Ventures</span>
+        </div>
+        <p class="small">Turnkey EV charging for apartments, offices, restaurants, and business hubs. We invest, install, and operate; you earn through rent and/or per‑kWh models.</p>
+      </div>
+      <div>
+        <div class="small" style="opacity:.9; font-weight:700; margin-bottom:6px">Explore</div>
+        <div class="stack">
+          <a href="#benefits">Benefits</a>
+          <a href="#model">Working model</a>
+          <a href="#capabilities">Capabilities</a>
+          <a href="#solutions">Solutions</a>
+          <a href="#calculator">Estimator</a>
+        </div>
+      </div>
+      <div>
+        <div class="small" style="opacity:.9; font-weight:700; margin-bottom:6px">Contact</div>
+        <div class="stack">
+          <a href="mailto:hello@mincharge.ventures">hello@mincharge.ventures</a>
+          <a href="tel:+911234567890">+91 12345 67890</a>
+        </div>
+      </div>
+    </div>
+    <div class="container" style="margin-top:18px; color:var(--muted); font-size:.9rem">
+      © <span id="year"></span> MinCharge Ventures. All rights reserved.
+    </div>
+  </footer>
+
+  <script>
+    // Intersection reveal
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+    }, { threshold: .14 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+    // Card tilt effect
+    const tilts = document.querySelectorAll('.tilt');
+    tilts.forEach(card => {
+      let bounds;
+      const reset = () => { card.style.transform = ''; card.style.boxShadow = ''; }
+      const calc = (e) => {
+        bounds = bounds || card.getBoundingClientRect();
+        const px = (e.clientX - bounds.left) / bounds.width - .5;
+        const py = (e.clientY - bounds.top) / bounds.height - .5;
+        const rx = (py * -6).toFixed(2);
+        const ry = (px * 6).toFixed(2);
+        card.style.transform = `perspective(800px) rotateX(${rx}deg) rotateY(${ry}deg) translateZ(0)`;
+        card.style.boxShadow = `0 18px 60px rgba(0,0,0,.45), ${-ry/2}px ${rx/2}px 30px rgba(110,125,255,.12)`;
+      };
+      card.addEventListener('mousemove', calc);
+      card.addEventListener('mouseleave', () => { bounds = null; reset(); });
+      card.addEventListener('mouseenter', () => { bounds = null; });
+    });
+
+    // Billing toggle copy
+    const note = document.getElementById('plan-note');
+    document.querySelectorAll('.toggle button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.toggle button').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const plan = btn.dataset.plan;
+        if (plan === 'rent') note.textContent = 'Predictable monthly income regardless of utilization.';
+        if (plan === 'unit') note.textContent = 'Earn on every kWh delivered—aligned with actual usage.';
+        if (plan === 'hybrid') note.textContent = 'A balanced model: base rent plus per‑kWh upside.';
+      });
+    });
+
+    // Simple ROI calculator
+    const $ = (id) => document.getElementById(id);
+    const inputs = ['stalls','util','kwh','rate','share','model-select','rent','rent-field'].reduce((acc,k)=> (acc[k]=$(k),acc),{});
+    const outs = ['out-energy','out-gross','out-owner','out-sessions','out-percharger','out-model'].reduce((acc,k)=> (acc[k]=$(k),acc),{});
+    function fmtMoney(n){ return '₹ ' + (Math.round(n).toLocaleString('en-IN')); }
+    function updateCalc(){
+      const stalls = Math.max(1, Number(inputs['stalls'].value||0));
+      const util = Math.max(0, Number(inputs['util'].value||0));
+      const kwh = Math.max(0, Number(inputs['kwh'].value||0));
+      const rate = Math.max(0, Number(inputs['rate'].value||0));
+      const share = Math.max(0, Number(inputs['share'].value||0));
+      const model = inputs['model-select'].value;
+      const rent = Math.max(0, Number(inputs['rent'].value||0));
+
+      const days = 30;
+      const sessionsPerDay = stalls * util;
+      const monthlySessions = sessionsPerDay * days;
+      const monthlyEnergy = monthlySessions * kwh; // kWh
+      const gross = monthlyEnergy * rate;
+
+      let owner = 0; let modelText = '';
+      if (model === 'per'){ owner = monthlyEnergy * share; modelText = `Per‑kWh @ ₹${share}/kWh`; inputs['rent-field'].style.display='none'; }
+      if (model === 'rent'){ owner = rent; modelText = `Fixed rent ₹${rent}/mo`; inputs['rent-field'].style.display='block'; }
+      if (model === 'hybrid'){ owner = rent + (monthlyEnergy * share); modelText = `Hybrid: ₹${rent}/mo + ₹${share}/kWh`; inputs['rent-field'].style.display='block'; }
+
+      outs['out-energy'].textContent = Math.round(monthlyEnergy).toLocaleString('en-IN') + ' kWh';
+      outs['out-gross'].textContent = fmtMoney(gross);
+      outs['out-owner'].textContent = fmtMoney(owner);
+      outs['out-sessions'].textContent = Math.round(sessionsPerDay) + '/day';
+      outs['out-percharger'].textContent = Math.round((monthlyEnergy / stalls)).toLocaleString('en-IN') + ' kWh';
+      outs['out-model'].textContent = modelText;
+    }
+    ['input','change'].forEach(ev => {
+      ['stalls','util','kwh','rate','share','model-select','rent'].forEach(id => inputs[id].addEventListener(ev, updateCalc));
+    });
+    // initialize
+    updateCalc();
+
+    // Smooth anchor scroll
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click', (e)=>{
+        const id = a.getAttribute('href').slice(1);
+        const el = document.getElementById(id);
+        if (el){
+          e.preventDefault();
+          el.scrollIntoView({behavior:'smooth', block:'start'});
+        }
+      });
+    });
+
+    // Compose email from contact form
+    $('c-send').addEventListener('click', ()=>{
+      const name = encodeURIComponent($('c-name').value.trim());
+      const email = encodeURIComponent($('c-email').value.trim());
+      const type = encodeURIComponent($('c-type').value);
+      const msg = encodeURIComponent($('c-msg').value.trim());
+      const subject = encodeURIComponent('EV Charging Proposal Request');
+      const body = encodeURIComponent(
+`Hello MinCharge,
+
+I would like a proposal for EV charging.
+
+Name: ${decodeURIComponent(name)||'-'}
+Email: ${decodeURIComponent(email)||'-'}
+Property type: ${decodeURIComponent(type)}
+Notes: ${decodeURIComponent(msg)||'-'}
+
+Thanks!`);
+      window.location.href = `mailto:hello@mincharge.ventures?subject=${subject}&body=${body}`;
+    });
+
+    // Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
