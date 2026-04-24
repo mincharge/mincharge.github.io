@@ -1,0 +1,4 @@
+# Prevent search engine indexing via HTTP headers
+<IfModule mod_headers.c>
+    Header set X-Robots-Tag "noindex, nofollow, noarchive, nosnippet"
+</IfModule>
