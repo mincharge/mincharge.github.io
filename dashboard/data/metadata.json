@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-04-25T14:50:11.166220",
-  "total_transactions": 1513,
+  "generated_at": "2026-04-25T15:58:14.235463",
+  "total_transactions": 1521,
   "date_range": {
     "earliest": "2026-01-23T14:52:59",
-    "latest": "2026-04-25T00:15:44"
+    "latest": "2026-04-25T14:56:08"
   },
-  "latest_end_time": "2026-04-25T00:15:44",
+  "latest_end_time": "2026-04-25T14:56:08",
   "vendors": [
     "relux",
     "zeon"
@@ -16,8 +16,8 @@
     "Rajapalayam | Ananda Garden"
   ],
   "summary": {
-    "total_units_kwh": 24487.77,
-    "total_net_revenue": 644247.78,
-    "total_gross_revenue": 760212.43
+    "total_units_kwh": 24805.31,
+    "total_net_revenue": 652936.98,
+    "total_gross_revenue": 770465.69
   }
 }
