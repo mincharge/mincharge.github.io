@@ -1,17 +1,17 @@
 /**
  * Table Rendering Module
- * 
+ *
  * Handles table rendering, sorting, pagination, and totals calculation.
  */
 
 // Table state
 let currentSort = {
     column: 'end',
-    direction: 'desc'  // Most recent first by default
+    direction: 'desc', // Most recent first by default
 };
 
 let currentPage = 1;
-let currentPageSize = 50;  // Default page size
+let currentPageSize = 50; // Default page size
 
 /**
  * Format date to YYYY-MM-DD HH:MM:SS
@@ -25,7 +25,7 @@ function formatDateTime(date) {
     const hours = String(date.getHours()).padStart(2, '0');
     const minutes = String(date.getMinutes()).padStart(2, '0');
     const seconds = String(date.getSeconds()).padStart(2, '0');
-    
+
     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }
 
@@ -38,7 +38,7 @@ function formatDuration(minutes) {
     const hours = Math.floor(minutes / 60);
     const mins = Math.floor(minutes % 60);
     const secs = Math.floor((minutes % 1) * 60);
-    
+
     return `${String(hours).padStart(2, '0')}:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
 }
 
@@ -48,7 +48,7 @@ function formatDuration(minutes) {
  * @returns {string} Formatted currency string
  */
 function formatCurrency(amount) {
-    return '₹' + amount.toFixed(2);
+    return `₹${amount.toFixed(2)}`;
 }
 
 /**
@@ -58,28 +58,28 @@ function formatCurrency(amount) {
  */
 export function calculateTotals(transactions) {
     const count = transactions.length;
-    
+
     if (count === 0) {
         return {
             count: 0,
             avgDuration: 0,
             totalUnits: 0,
             totalNetRevenue: 0,
-            totalGrossRevenue: 0
+            totalGrossRevenue: 0,
         };
     }
-    
+
     const totalDuration = transactions.reduce((sum, t) => sum + t.duration_minutes, 0);
     const totalUnits = transactions.reduce((sum, t) => sum + t.units_kwh, 0);
     const totalNetRevenue = transactions.reduce((sum, t) => sum + t.net_revenue, 0);
     const totalGrossRevenue = transactions.reduce((sum, t) => sum + t.gross_revenue, 0);
-    
+
     return {
         count,
         avgDuration: totalDuration / count,
-        totalUnits: totalUnits,
-        totalNetRevenue: totalNetRevenue,
-        totalGrossRevenue: totalGrossRevenue
+        totalUnits,
+        totalNetRevenue,
+        totalGrossRevenue,
     };
 }
 
@@ -92,10 +92,10 @@ export function calculateTotals(transactions) {
  */
 function sortTransactions(transactions, column, direction) {
     const sorted = [...transactions];
-    
+
     sorted.sort((a, b) => {
         let aVal, bVal;
-        
+
         // Get values based on column
         switch (column) {
             case 'id':
@@ -141,15 +141,15 @@ function sortTransactions(transactions, column, direction) {
             default:
                 return 0;
         }
-        
+
         // Compare values
         let comparison = 0;
         if (aVal < bVal) comparison = -1;
         if (aVal > bVal) comparison = 1;
-        
+
         return direction === 'asc' ? comparison : -comparison;
     });
-    
+
     return sorted;
 }
 
@@ -161,16 +161,16 @@ function sortTransactions(transactions, column, direction) {
 function renderTableRows(transactions, page) {
     const tbody = document.getElementById('table-body');
     tbody.innerHTML = '';
-    
+
     // Calculate pagination
     const startIndex = (page - 1) * currentPageSize;
     const endIndex = Math.min(startIndex + currentPageSize, transactions.length);
     const pageTransactions = transactions.slice(startIndex, endIndex);
-    
+
     // Render rows
     pageTransactions.forEach(txn => {
         const row = document.createElement('tr');
-        
+
         row.innerHTML = `
             <td>${txn.id}</td>
             <td>${txn.vendor}</td>
@@ -183,7 +183,7 @@ function renderTableRows(transactions, page) {
             <td>${formatCurrency(txn.net_revenue)}</td>
             <td>${formatCurrency(txn.gross_revenue)}</td>
         `;
-        
+
         tbody.appendChild(row);
     });
 }
@@ -195,7 +195,7 @@ function renderTableRows(transactions, page) {
 function renderTotalsRow(totals) {
     const tfoot = document.getElementById('table-footer');
     tfoot.innerHTML = '';
-    
+
     const row = document.createElement('tr');
     row.innerHTML = `
         <td>${totals.count} transactions</td>
@@ -206,7 +206,7 @@ function renderTotalsRow(totals) {
         <td>${formatCurrency(totals.totalNetRevenue)}</td>
         <td>${formatCurrency(totals.totalGrossRevenue)}</td>
     `;
-    
+
     tfoot.appendChild(row);
 }
 
@@ -226,14 +226,14 @@ function updateTableCount(count) {
  */
 function updatePagination(totalTransactions, currentPage) {
     const totalPages = Math.ceil(totalTransactions / currentPageSize);
-    
+
     const prevBtn = document.getElementById('prev-page');
     const nextBtn = document.getElementById('next-page');
     const pageInfo = document.getElementById('page-info');
-    
+
     prevBtn.disabled = currentPage === 1;
     nextBtn.disabled = currentPage >= totalPages || totalPages === 0;
-    
+
     if (totalPages === 0) {
         pageInfo.textContent = 'Page 0 of 0';
     } else {
@@ -251,7 +251,7 @@ function updateSortIndicators(column, direction) {
     document.querySelectorAll('.transactions-table th').forEach(th => {
         th.classList.remove('sort-asc', 'sort-desc');
     });
-    
+
     // Add class to current sort column
     const th = document.querySelector(`.transactions-table th[data-sort="${column}"]`);
     if (th) {
@@ -266,14 +266,14 @@ function updateSortIndicators(column, direction) {
 export function renderTable(transactions) {
     // Sort transactions
     const sorted = sortTransactions(transactions, currentSort.column, currentSort.direction);
-    
+
     // Render rows for current page
     renderTableRows(sorted, currentPage);
-    
+
     // Calculate and render totals (for all filtered transactions, not just current page)
     const totals = calculateTotals(transactions);
     renderTotalsRow(totals);
-    
+
     // Update UI elements
     updateTableCount(transactions.length);
     updatePagination(transactions.length, currentPage);
@@ -285,7 +285,7 @@ export function renderTable(transactions) {
  * @param {Array} transactions - Filtered transactions
  */
 export function updateTable(transactions) {
-    currentPage = 1;  // Reset to first page
+    currentPage = 1; // Reset to first page
     renderTable(transactions);
 }
 
@@ -302,7 +302,7 @@ export function handleSort(column, transactions) {
         currentSort.column = column;
         currentSort.direction = 'desc';
     }
-    
+
     renderTable(transactions);
 }
 
@@ -336,7 +336,7 @@ export function resetTableState() {
     currentPage = 1;
     currentSort = {
         column: 'end',
-        direction: 'desc'
+        direction: 'desc',
     };
 }
 
@@ -346,5 +346,5 @@ export function resetTableState() {
  */
 export function setPageSize(size) {
     currentPageSize = size;
-    currentPage = 1;  // Reset to first page when changing page size
+    currentPage = 1; // Reset to first page when changing page size
 }

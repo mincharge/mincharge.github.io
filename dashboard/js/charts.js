@@ -6,9 +6,9 @@
 
 // Station color mapping (consistent across all charts)
 const STATION_COLORS = {
-    'Rajapalayam | Ananda Garden': '#3b82f6',  // Blue
-    'Hotel Rayas': '#10b981',                   // Green
-    'Nagercoil, Thovalai | Carnival City': '#f59e0b',  // Amber
+    'Rajapalayam | Ananda Garden': '#3b82f6', // Blue
+    'Hotel Rayas': '#10b981', // Green
+    'Nagercoil, Thovalai | Carnival City': '#f59e0b', // Amber
 };
 
 // Fallback color palette for unknown stations
@@ -18,7 +18,7 @@ const COLOR_PALETTE = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#
 let chartInstances = {
     dailyRevenue: null,
     hourlyUsage: null,
-    stationRevenue: null
+    stationRevenue: null,
 };
 
 /**
@@ -43,7 +43,7 @@ export function destroyCharts() {
     chartInstances = {
         dailyRevenue: null,
         hourlyUsage: null,
-        stationRevenue: null
+        stationRevenue: null,
     };
 }
 
@@ -71,7 +71,7 @@ export function renderDailyRevenueChart(transactions) {
         const year = txn.endDate.getFullYear();
         const month = String(txn.endDate.getMonth() + 1).padStart(2, '0');
         const day = String(txn.endDate.getDate()).padStart(2, '0');
-        const date = `${year}-${month}-${day}`;  // YYYY-MM-DD in local timezone
+        const date = `${year}-${month}-${day}`; // YYYY-MM-DD in local timezone
         const station = txn.station;
 
         if (!dataByDateStation[date]) {
@@ -96,14 +96,14 @@ export function renderDailyRevenueChart(transactions) {
         data: dates.map(date => dataByDateStation[date][station] || 0),
         backgroundColor: getStationColor(station, index),
         borderColor: getStationColor(station, index),
-        borderWidth: 1
+        borderWidth: 1,
     }));
 
     chartInstances.dailyRevenue = new Chart(ctx, {
         type: 'bar',
         data: {
             labels: dates,
-            datasets: datasets
+            datasets,
         },
         options: {
             responsive: true,
@@ -111,41 +111,41 @@ export function renderDailyRevenueChart(transactions) {
             plugins: {
                 legend: {
                     display: true,
-                    position: 'top'
+                    position: 'top',
                 },
                 tooltip: {
                     mode: 'index',
                     intersect: false,
                     callbacks: {
-                        label: function(context) {
+                        label(context) {
                             return `${context.dataset.label}: ₹${context.parsed.y.toFixed(2)}`;
-                        }
-                    }
-                }
+                        },
+                    },
+                },
             },
             scales: {
                 x: {
                     stacked: true,
                     title: {
                         display: true,
-                        text: 'Date'
-                    }
+                        text: 'Date',
+                    },
                 },
                 y: {
                     stacked: true,
                     beginAtZero: true,
                     title: {
                         display: true,
-                        text: 'Net Revenue (₹)'
+                        text: 'Net Revenue (₹)',
                     },
                     ticks: {
-                        callback: function(value) {
-                            return '₹' + value.toLocaleString();
-                        }
-                    }
-                }
-            }
-        }
+                        callback(value) {
+                            return `₹${value.toLocaleString()}`;
+                        },
+                    },
+                },
+            },
+        },
     });
 }
 
@@ -167,62 +167,64 @@ export function renderHourlyUsageChart(transactions) {
     const usageByHour = new Array(24).fill(0);
 
     transactions.forEach(txn => {
-        const hour = txn.endDate.getHours();  // Extract hour from end_time
+        const hour = txn.endDate.getHours(); // Extract hour from end_time
         usageByHour[hour] += txn.units_kwh;
     });
 
-    const hours = Array.from({length: 24}, (_, i) => i);
+    const hours = Array.from({ length: 24 }, (_, i) => i);
 
     chartInstances.hourlyUsage = new Chart(ctx, {
         type: 'bar',
         data: {
             labels: hours.map(h => `${h}:00`),
-            datasets: [{
-                label: 'Energy Usage (kWh)',
-                data: usageByHour,
-                backgroundColor: '#3b82f6',
-                borderColor: '#2563eb',
-                borderWidth: 1
-            }]
+            datasets: [
+                {
+                    label: 'Energy Usage (kWh)',
+                    data: usageByHour,
+                    backgroundColor: '#3b82f6',
+                    borderColor: '#2563eb',
+                    borderWidth: 1,
+                },
+            ],
         },
         options: {
             responsive: true,
             maintainAspectRatio: true,
             plugins: {
                 legend: {
-                    display: false
+                    display: false,
                 },
                 tooltip: {
                     callbacks: {
-                        label: function(context) {
+                        label(context) {
                             const hour = context.dataIndex;
                             const nextHour = (hour + 1) % 24;
                             return `${hour}:00-${nextHour}:00: ${context.parsed.y.toFixed(2)} kWh`;
-                        }
-                    }
-                }
+                        },
+                    },
+                },
             },
             scales: {
                 x: {
                     title: {
                         display: true,
-                        text: 'Hour of Day'
-                    }
+                        text: 'Hour of Day',
+                    },
                 },
                 y: {
                     beginAtZero: true,
                     title: {
                         display: true,
-                        text: 'Energy (kWh)'
+                        text: 'Energy (kWh)',
                     },
                     ticks: {
-                        callback: function(value) {
-                            return value.toFixed(0) + ' kWh';
-                        }
-                    }
-                }
-            }
-        }
+                        callback(value) {
+                            return `${value.toFixed(0)} kWh`;
+                        },
+                    },
+                },
+            },
+        },
     });
 }
 
@@ -251,9 +253,7 @@ export function renderStationRevenueChart(transactions) {
     });
 
     // Sort stations by revenue (descending)
-    const stations = Object.keys(revenueByStation).sort((a, b) =>
-        revenueByStation[b] - revenueByStation[a]
-    );
+    const stations = Object.keys(revenueByStation).sort((a, b) => revenueByStation[b] - revenueByStation[a]);
 
     const revenues = stations.map(s => revenueByStation[s]);
     const colors = stations.map((s, i) => getStationColor(s, i));
@@ -265,12 +265,14 @@ export function renderStationRevenueChart(transactions) {
         type: 'pie',
         data: {
             labels: stations,
-            datasets: [{
-                data: revenues,
-                backgroundColor: colors,
-                borderColor: '#ffffff',
-                borderWidth: 2
-            }]
+            datasets: [
+                {
+                    data: revenues,
+                    backgroundColor: colors,
+                    borderColor: '#ffffff',
+                    borderWidth: 2,
+                },
+            ],
         },
         options: {
             responsive: true,
@@ -278,35 +280,35 @@ export function renderStationRevenueChart(transactions) {
             plugins: {
                 legend: {
                     display: true,
-                    position: 'bottom'
+                    position: 'bottom',
                 },
                 tooltip: {
                     callbacks: {
-                        label: function(context) {
+                        label(context) {
                             const revenue = context.parsed;
                             const percentage = ((revenue / total) * 100).toFixed(1);
                             return `${context.label}: ₹${revenue.toFixed(2)} (${percentage}%)`;
-                        }
-                    }
+                        },
+                    },
                 },
                 datalabels: {
                     color: '#ffffff',
                     font: {
                         weight: 'bold',
-                        size: 14
+                        size: 14,
                     },
-                    formatter: function(value, context) {
+                    formatter(value, _context) {
                         const percentage = ((value / total) * 100).toFixed(2);
                         // Format: ₹12,345.67 (45.23%)
                         const formattedValue = value.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-                        return '₹' + formattedValue + '\n(' + percentage + '%)';
+                        return `₹${formattedValue}\n(${percentage}%)`;
                     },
                     anchor: 'center',
-                    align: 'center'
-                }
-            }
+                    align: 'center',
+                },
+            },
         },
-        plugins: [ChartDataLabels]
+        plugins: [ChartDataLabels],
     });
 }
 
