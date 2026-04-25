@@ -130,6 +130,10 @@ function sortTransactions(transactions, column, direction) {
                 aVal = a.units_kwh;
                 bVal = b.units_kwh;
                 break;
+            case 'rate':
+                aVal = a.rate;
+                bVal = b.rate;
+                break;
             case 'net_revenue':
                 aVal = a.net_revenue;
                 bVal = b.net_revenue;
@@ -180,6 +184,7 @@ function renderTableRows(transactions, page) {
             <td>${formatDuration(txn.duration_minutes)}</td>
             <td>${txn.charger}-${txn.connector}</td>
             <td>${txn.units_kwh.toFixed(2)}</td>
+            <td>${(txn.rate || 0).toFixed(2)}</td>
             <td>${formatCurrency(txn.net_revenue)}</td>
             <td>${formatCurrency(txn.gross_revenue)}</td>
         `;
@@ -203,6 +208,7 @@ function renderTotalsRow(totals) {
         <td>${formatDuration(totals.avgDuration)}</td>
         <td></td>
         <td>${totals.totalUnits.toFixed(2)}</td>
+        <td></td>
         <td>${formatCurrency(totals.totalNetRevenue)}</td>
         <td>${formatCurrency(totals.totalGrossRevenue)}</td>
     `;

@@ -19,35 +19,35 @@
     --color-success: #16a34a;
     --color-warning: #eab308;
     --color-danger: #dc2626;
-    
+
     /* UI Colors */
     --color-bg: #ffffff;
     --color-bg-alt: #f9fafb;
     --color-border: #e5e7eb;
     --color-text: #111827;
     --color-text-muted: #6b7280;
-    
+
     /* Chart Colors (consistent across charts) */
-    --color-station-1: #3b82f6;  /* Blue - Rajapalayam */
-    --color-station-2: #10b981;  /* Green - Hotel Rayas */
-    --color-station-3: #f59e0b;  /* Amber - Thovalai */
-    
+    --color-station-1: #3b82f6; /* Blue - Rajapalayam */
+    --color-station-2: #10b981; /* Green - Hotel Rayas */
+    --color-station-3: #f59e0b; /* Amber - Thovalai */
+
     /* Spacing */
     --spacing-xs: 0.25rem;
     --spacing-sm: 0.5rem;
     --spacing-md: 1rem;
     --spacing-lg: 1.5rem;
     --spacing-xl: 2rem;
-    
+
     /* Typography */
     --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     --font-mono: 'Courier New', Courier, monospace;
-    
+
     /* Border Radius */
     --radius-sm: 0.25rem;
     --radius-md: 0.5rem;
     --radius-lg: 0.75rem;
-    
+
     /* Shadows */
     --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
     --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
@@ -96,6 +96,11 @@ body {
     margin-bottom: var(--spacing-xs);
 }
 
+.header .subtitle .caps {
+    color: var(--color-primary);
+    font-weight: 700;
+}
+
 .header .last-update {
     font-size: 0.875rem;
     color: var(--color-text-muted);
@@ -105,6 +110,16 @@ body {
 .header .last-update #last-update-time {
     font-weight: 600;
     color: var(--color-text);
+}
+
+/* Footer
+   ========================================================================== */
+
+.footer {
+    text-align: center;
+    padding: var(--spacing-lg);
+    color: var(--color-text-muted);
+    font-size: 0.875rem;
 }
 
 /* Filters Section
@@ -217,7 +232,7 @@ body {
     background-color: var(--color-bg-alt);
 }
 
-.multi-select-option input[type="checkbox"] {
+.multi-select-option input[type='checkbox'] {
     margin-right: var(--spacing-sm);
     cursor: pointer;
 }
@@ -307,7 +322,9 @@ body {
 }
 
 @keyframes spin {
-    to { transform: rotate(360deg); }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 .error {
@@ -353,29 +370,29 @@ body {
 @media (min-width: 1000px) {
     .charts {
         display: grid;
-        grid-template-columns: 2fr 1fr;  /* 2/3 left, 1/3 right */
+        grid-template-columns: 2fr 1fr; /* 2/3 left, 1/3 right */
         grid-template-rows: auto auto;
         gap: var(--spacing-lg);
     }
-    
+
     /* Daily Revenue: Left column, top row */
     .chart-container:nth-child(1) {
         grid-column: 1;
         grid-row: 1;
     }
-    
+
     /* Hourly Usage: Left column, bottom row */
     .chart-container:nth-child(2) {
         grid-column: 1;
         grid-row: 2;
     }
-    
+
     /* Station Pie Chart: Right column, span both rows */
     .chart-container:nth-child(3) {
         grid-column: 2;
-        grid-row: 1 / 3;  /* Span from row 1 to row 3 (exclusive) */
+        grid-row: 1 / 3; /* Span from row 1 to row 3 (exclusive) */
     }
-    
+
     /* Adjust height for column charts */
     .chart-container:nth-child(1) canvas,
     .chart-container:nth-child(2) canvas {
@@ -574,33 +591,33 @@ body {
     .container {
         padding: var(--spacing-md);
     }
-    
+
     .header h1 {
         font-size: 1.5rem;
     }
-    
+
     .filters {
         grid-template-columns: 1fr;
     }
-    
+
     .filter-actions {
         flex-direction: column;
     }
-    
+
     .filter-actions .btn {
         width: 100%;
     }
-    
+
     .table-wrapper {
         border-radius: var(--radius-md);
         box-shadow: var(--shadow-sm);
     }
-    
+
     .table-controls {
         flex-direction: column;
         align-items: flex-start;
     }
-    
+
     .pagination {
         width: 100%;
         flex-direction: column;

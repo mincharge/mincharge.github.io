@@ -1,171 +1,180 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mincharge Ventures - Dashboard</title>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Mincharge Ventures - Dashboard</title>
 
-    <!-- Prevent search engine indexing -->
-    <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
-    <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
-    <meta name="bingbot" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+        <!-- Prevent search engine indexing -->
+        <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+        <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+        <meta name="bingbot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
 
-    <link rel="stylesheet" href="css/dashboard.css">
-</head>
-<body>
-    <div class="container">
-        <!-- Header -->
-        <header class="header">
-            <h1>Mincharge Ventures</h1>
-            <p class="subtitle">Operations Tracking Monitoring and Analytics</p>
-            <p class="last-update">Last Updated At: <span id="last-update-time">Loading...</span></p>
-        </header>
+        <link rel="stylesheet" href="css/dashboard.css" />
+    </head>
+    <body>
+        <div class="container">
+            <!-- Header -->
+            <header class="header">
+                <h1>Mincharge Ventures</h1>
+                <p class="subtitle">
+                    <span class="caps">O</span>perations <span class="caps">T</span>racking,
+                    <span class="caps">M</span>onitoring and <span class="caps">AN</span>alytics
+                    (<span class="caps">OTMAN</span>)
+                </p>
+                <p class="last-update">Last Updated At: <span id="last-update-time">Loading...</span></p>
+            </header>
 
-        <!-- Filters Section -->
-        <section class="filters">
-            <div class="filter-group">
-                <label for="vendor-filter">Vendor</label>
-                <div class="multi-select" id="vendor-filter">
-                    <button class="multi-select-button" type="button">
-                        <span class="selected-count">All Vendors</span>
-                        <span class="arrow">▼</span>
-                    </button>
-                    <div class="multi-select-dropdown" hidden>
-                        <div class="multi-select-options">
-                            <!-- Populated by JavaScript -->
+            <!-- Filters Section -->
+            <section class="filters">
+                <div class="filter-group">
+                    <label for="vendor-filter">Vendor</label>
+                    <div class="multi-select" id="vendor-filter">
+                        <button class="multi-select-button" type="button">
+                            <span class="selected-count">All Vendors</span>
+                            <span class="arrow">▼</span>
+                        </button>
+                        <div class="multi-select-dropdown" hidden>
+                            <div class="multi-select-options">
+                                <!-- Populated by JavaScript -->
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="filter-group">
-                <label for="station-filter">Station</label>
-                <div class="multi-select" id="station-filter">
-                    <button class="multi-select-button" type="button">
-                        <span class="selected-count">All Stations</span>
-                        <span class="arrow">▼</span>
-                    </button>
-                    <div class="multi-select-dropdown" hidden>
-                        <div class="multi-select-options">
-                            <!-- Populated by JavaScript -->
+                <div class="filter-group">
+                    <label for="station-filter">Station</label>
+                    <div class="multi-select" id="station-filter">
+                        <button class="multi-select-button" type="button">
+                            <span class="selected-count">All Stations</span>
+                            <span class="arrow">▼</span>
+                        </button>
+                        <div class="multi-select-dropdown" hidden>
+                            <div class="multi-select-options">
+                                <!-- Populated by JavaScript -->
+                            </div>
                         </div>
                     </div>
                 </div>
+
+                <div class="filter-group">
+                    <label for="start-time">Start Date</label>
+                    <input type="datetime-local" id="start-time" class="filter-input" />
+                </div>
+
+                <div class="filter-group">
+                    <label for="end-time">End Date</label>
+                    <input type="datetime-local" id="end-time" class="filter-input" />
+                </div>
+
+                <div class="filter-actions">
+                    <button id="reset-filters" class="btn btn-secondary">Reset</button>
+                    <button id="apply-filters" class="btn btn-primary">Apply Filters</button>
+                </div>
+            </section>
+
+            <!-- Loading State -->
+            <div id="loading" class="loading" hidden>
+                <div class="spinner"></div>
+                <p>Loading dashboard data...</p>
             </div>
 
-            <div class="filter-group">
-                <label for="start-time">Start Date</label>
-                <input type="datetime-local" id="start-time" class="filter-input">
+            <!-- Error State -->
+            <div id="error" class="error" hidden>
+                <p class="error-message"></p>
             </div>
 
-            <div class="filter-group">
-                <label for="end-time">End Date</label>
-                <input type="datetime-local" id="end-time" class="filter-input">
-            </div>
+            <!-- Charts Section -->
+            <section id="charts" class="charts" hidden>
+                <div class="chart-container">
+                    <h2>Daily Net Revenue</h2>
+                    <canvas id="daily-revenue-chart"></canvas>
+                </div>
 
-            <div class="filter-actions">
-                <button id="reset-filters" class="btn btn-secondary">Reset</button>
-                <button id="apply-filters" class="btn btn-primary">Apply Filters</button>
-            </div>
-        </section>
+                <div class="chart-container">
+                    <h2>Hourly Usage</h2>
+                    <canvas id="hourly-usage-chart"></canvas>
+                </div>
 
-        <!-- Loading State -->
-        <div id="loading" class="loading" hidden>
-            <div class="spinner"></div>
-            <p>Loading dashboard data...</p>
+                <div class="chart-container">
+                    <h2>Station Revenue</h2>
+                    <canvas id="station-revenue-chart"></canvas>
+                </div>
+            </section>
+
+            <!-- Table Section -->
+            <section id="table-section" class="table-section" hidden>
+                <div class="table-header">
+                    <h2>Transactions</h2>
+                    <div class="table-info">
+                        <span id="table-count">0 transactions</span>
+                    </div>
+                </div>
+
+                <div class="table-wrapper">
+                    <table id="transactions-table" class="transactions-table">
+                        <thead>
+                            <tr>
+                                <th data-sort="id" class="sortable">Transaction ID</th>
+                                <th data-sort="vendor" class="sortable">Vendor</th>
+                                <th data-sort="station" class="sortable">Station</th>
+                                <th data-sort="start" class="sortable">Start Time</th>
+                                <th data-sort="end" class="sortable">End Time</th>
+                                <th data-sort="duration_minutes" class="sortable">Duration</th>
+                                <th data-sort="charger" class="sortable">Charger/Connector</th>
+                                <th data-sort="units_kwh" class="sortable">Units (kWh)</th>
+                                <th data-sort="rate" class="sortable">Rate (₹/kWh)</th>
+                                <th data-sort="net_revenue" class="sortable">Net Revenue</th>
+                                <th data-sort="gross_revenue" class="sortable">Gross Revenue</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-body">
+                            <!-- Populated by JavaScript -->
+                        </tbody>
+                        <tfoot id="table-footer">
+                            <!-- Totals row populated by JavaScript -->
+                        </tfoot>
+                    </table>
+                </div>
+
+                <!-- Table Controls -->
+                <div class="table-controls">
+                    <div class="page-size-selector">
+                        <label for="page-size">Rows per page:</label>
+                        <select id="page-size" class="page-size-select">
+                            <option value="50" selected>50</option>
+                            <option value="100">100</option>
+                            <option value="200">200</option>
+                            <option value="500">500</option>
+                            <option value="all">All</option>
+                        </select>
+                    </div>
+
+                    <!-- Pagination -->
+                    <div class="pagination">
+                        <button id="prev-page" class="btn btn-secondary" disabled>Previous</button>
+                        <span id="page-info" class="page-info">Page 1 of 1</span>
+                        <button id="next-page" class="btn btn-secondary" disabled>Next</button>
+                    </div>
+                </div>
+            </section>
         </div>
 
-        <!-- Error State -->
-        <div id="error" class="error" hidden>
-            <p class="error-message"></p>
-        </div>
+        <footer class="footer">
+            <p>Copyright &copy; 2026 Mincharge Ventures</p>
+        </footer>
 
-        <!-- Charts Section -->
-        <section id="charts" class="charts" hidden>
-            <div class="chart-container">
-                <h2>Daily Net Revenue</h2>
-                <canvas id="daily-revenue-chart"></canvas>
-            </div>
+        <!-- Chart.js from CDN -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 
-            <div class="chart-container">
-                <h2>Hourly Usage</h2>
-                <canvas id="hourly-usage-chart"></canvas>
-            </div>
+        <!-- Chart.js Data Labels Plugin -->
+        <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
 
-            <div class="chart-container">
-                <h2>Station Revenue</h2>
-                <canvas id="station-revenue-chart"></canvas>
-            </div>
-        </section>
-
-        <!-- Table Section -->
-        <section id="table-section" class="table-section" hidden>
-            <div class="table-header">
-                <h2>Transactions</h2>
-                <div class="table-info">
-                    <span id="table-count">0 transactions</span>
-                </div>
-            </div>
-
-            <div class="table-wrapper">
-                <table id="transactions-table" class="transactions-table">
-                    <thead>
-                        <tr>
-                            <th data-sort="id" class="sortable">Transaction ID</th>
-                            <th data-sort="vendor" class="sortable">Vendor</th>
-                            <th data-sort="station" class="sortable">Station</th>
-                            <th data-sort="start" class="sortable">Start Time</th>
-                            <th data-sort="end" class="sortable">End Time</th>
-                            <th data-sort="duration_minutes" class="sortable">Duration</th>
-                            <th data-sort="charger" class="sortable">Charger/Connector</th>
-                            <th data-sort="units_kwh" class="sortable">Units (kWh)</th>
-                            <th data-sort="net_revenue" class="sortable">Net Revenue</th>
-                            <th data-sort="gross_revenue" class="sortable">Gross Revenue</th>
-                        </tr>
-                    </thead>
-                    <tbody id="table-body">
-                        <!-- Populated by JavaScript -->
-                    </tbody>
-                    <tfoot id="table-footer">
-                        <!-- Totals row populated by JavaScript -->
-                    </tfoot>
-                </table>
-            </div>
-
-            <!-- Table Controls -->
-            <div class="table-controls">
-                <div class="page-size-selector">
-                    <label for="page-size">Rows per page:</label>
-                    <select id="page-size" class="page-size-select">
-                        <option value="50" selected>50</option>
-                        <option value="100">100</option>
-                        <option value="200">200</option>
-                        <option value="500">500</option>
-                        <option value="all">All</option>
-                    </select>
-                </div>
-
-                <!-- Pagination -->
-                <div class="pagination">
-                    <button id="prev-page" class="btn btn-secondary" disabled>Previous</button>
-                    <span id="page-info" class="page-info">Page 1 of 1</span>
-                    <button id="next-page" class="btn btn-secondary" disabled>Next</button>
-                </div>
-            </div>
-        </section>
-    </div>
-
-    <!-- Chart.js from CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-
-    <!-- Chart.js Data Labels Plugin -->
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
-
-    <!-- Dashboard JavaScript Modules -->
-    <script type="module" src="js/data-loader.js"></script>
-    <script type="module" src="js/filters.js"></script>
-    <script type="module" src="js/charts.js"></script>
-    <script type="module" src="js/table.js"></script>
-    <script type="module" src="js/main.js"></script>
-</body>
+        <!-- Dashboard JavaScript Modules -->
+        <script type="module" src="js/data-loader.js"></script>
+        <script type="module" src="js/filters.js"></script>
+        <script type="module" src="js/charts.js"></script>
+        <script type="module" src="js/table.js"></script>
+        <script type="module" src="js/main.js"></script>
+    </body>
 </html>
