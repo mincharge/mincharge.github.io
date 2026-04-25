@@ -241,21 +241,25 @@ export function renderStationRevenueChart(transactions) {
         chartInstances.stationRevenue.destroy();
     }
 
-    // Aggregate revenue by station
+    // Aggregate revenue and kWh by station
     const revenueByStation = {};
+    const kWhByStation = {};
 
     transactions.forEach(txn => {
         const station = txn.station;
         if (!revenueByStation[station]) {
             revenueByStation[station] = 0;
+            kWhByStation[station] = 0;
         }
         revenueByStation[station] += txn.net_revenue;
+        kWhByStation[station] += txn.units_kwh;
     });
 
     // Sort stations by revenue (descending)
     const stations = Object.keys(revenueByStation).sort((a, b) => revenueByStation[b] - revenueByStation[a]);
 
     const revenues = stations.map(s => revenueByStation[s]);
+    const kWhValues = stations.map(s => kWhByStation[s]);
     const colors = stations.map((s, i) => getStationColor(s, i));
 
     // Calculate total for percentages
@@ -286,8 +290,10 @@ export function renderStationRevenueChart(transactions) {
                     callbacks: {
                         label(context) {
                             const revenue = context.parsed;
+                            const station = context.label;
                             const percentage = ((revenue / total) * 100).toFixed(1);
-                            return `${context.label}: ₹${revenue.toFixed(2)} (${percentage}%)`;
+                            const kWh = kWhValues[stations.indexOf(station)];
+                            return `${station}: ₹${revenue.toFixed(2)} (${percentage}%), ${kWh.toFixed(2)} kWh`;
                         },
                     },
                 },
@@ -297,11 +303,13 @@ export function renderStationRevenueChart(transactions) {
                         weight: 'bold',
                         size: 14,
                     },
-                    formatter(value, _context) {
+                    formatter(value, context) {
                         const percentage = ((value / total) * 100).toFixed(2);
-                        // Format: ₹12,345.67 (45.23%)
+                        const station = context.chart.data.labels[context.dataIndex];
+                        const kWh = kWhValues[stations.indexOf(station)];
                         const formattedValue = value.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-                        return `₹${formattedValue}\n(${percentage}%)`;
+                        const formattedKWh = kWh.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                        return `₹${formattedValue}\n(${percentage}%)\n${formattedKWh} kWh`;
                     },
                     anchor: 'center',
                     align: 'center',
