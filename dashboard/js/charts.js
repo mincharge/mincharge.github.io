@@ -264,6 +264,7 @@ export function renderStationRevenueChart(transactions) {
 
     // Calculate total for percentages
     const total = revenues.reduce((sum, val) => sum + val, 0);
+    const totalKWh = kWhValues.reduce((sum, val) => sum + val, 0);
 
     chartInstances.stationRevenue = new Chart(ctx, {
         type: 'pie',
@@ -318,6 +319,15 @@ export function renderStationRevenueChart(transactions) {
         },
         plugins: [ChartDataLabels],
     });
+
+    // Update totals table
+    const totalNetRevenueEl = document.getElementById('total-net-revenue');
+    const totalKWhEl = document.getElementById('total-kwh');
+
+    if (totalNetRevenueEl && totalKWhEl) {
+        totalNetRevenueEl.textContent = `₹${total.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        totalKWhEl.textContent = `${totalKWh.toFixed(2)}`;
+    }
 }
 
 /**

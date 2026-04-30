@@ -19,8 +19,9 @@
                 <h1>Mincharge Ventures</h1>
                 <p class="subtitle">
                     <span class="caps">O</span>perations <span class="caps">T</span>racking,
-                    <span class="caps">M</span>onitoring and <span class="caps">AN</span>alytics
-                    (<span class="caps">OTMAN</span>)
+                    <span class="caps">M</span>onitoring and <span class="caps">AN</span>alytics (<span class="caps"
+                        >OTMAN</span
+                    >)
                 </p>
                 <p class="last-update">Last Updated At: <span id="last-update-time">Loading...</span></p>
             </header>
@@ -85,29 +86,55 @@
             </div>
 
             <!-- Charts Section -->
-            <section id="charts" class="charts" hidden>
-                <div class="chart-container">
-                    <h2>Daily Net Revenue</h2>
-                    <canvas id="daily-revenue-chart"></canvas>
+            <div id="charts-section-wrapper">
+                <div
+                    class="charts-header"
+                    id="charts-header"
+                    role="button"
+                    tabindex="0"
+                    aria-expanded="true"
+                    aria-controls="charts"
+                >
+                    <span class="chevron">▼</span>
+                    <h2>Charts</h2>
                 </div>
 
-                <div class="chart-container">
-                    <h2>Hourly Usage</h2>
-                    <canvas id="hourly-usage-chart"></canvas>
-                </div>
+                <section id="charts" class="charts" hidden>
+                    <div class="chart-container">
+                        <h2>Daily Net Revenue</h2>
+                        <canvas id="daily-revenue-chart"></canvas>
+                    </div>
 
-                <div class="chart-container">
-                    <h2>Station Revenue</h2>
-                    <canvas id="station-revenue-chart"></canvas>
-                </div>
-            </section>
+                    <div class="chart-container">
+                        <h2>Hourly Usage</h2>
+                        <canvas id="hourly-usage-chart"></canvas>
+                    </div>
+
+                    <div class="chart-container">
+                        <h2>Station Revenue</h2>
+                        <canvas id="station-revenue-chart"></canvas>
+                        <table class="totals-table">
+                            <tbody>
+                                <tr>
+                                    <td class="totals-label">Net Revenue:</td>
+                                    <td class="totals-value" id="total-net-revenue">₹0.00</td>
+                                </tr>
+                                <tr>
+                                    <td class="totals-label">Energy (kWh):</td>
+                                    <td class="totals-value" id="total-kwh">0.00</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
 
             <!-- Table Section -->
             <section id="table-section" class="table-section" hidden>
                 <div class="table-header">
-                    <h2>Transactions</h2>
+                    <h2 id="table-heading">Transactions</h2>
                     <div class="table-info">
-                        <span id="table-count">0 transactions</span>
+                        <span id="table-totals"></span>
                     </div>
                 </div>
 
@@ -131,9 +158,6 @@
                         <tbody id="table-body">
                             <!-- Populated by JavaScript -->
                         </tbody>
-                        <tfoot id="table-footer">
-                            <!-- Totals row populated by JavaScript -->
-                        </tfoot>
                     </table>
                 </div>
 

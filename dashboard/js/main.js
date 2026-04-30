@@ -71,6 +71,17 @@ function showDashboard() {
     document.getElementById('error').hidden = true;
     document.getElementById('charts').hidden = false;
     document.getElementById('table-section').hidden = false;
+
+    // Restore charts collapsed state from sessionStorage
+    const chartsCollapsed = sessionStorage.getItem('chartsCollapsed') === 'true';
+    const chartsEl = document.getElementById('charts');
+    const headerEl = document.getElementById('charts-header');
+
+    if (chartsCollapsed) {
+        chartsEl.classList.add('collapsed');
+        headerEl.classList.add('collapsed');
+        headerEl.setAttribute('aria-expanded', 'false');
+    }
 }
 
 /**
@@ -321,6 +332,28 @@ function setupEventListeners() {
     // Reset filters button
     document.getElementById('reset-filters').addEventListener('click', () => {
         resetFiltersAndUpdate();
+    });
+
+    // Charts collapse/expand toggle
+    const chartsHeader = document.getElementById('charts-header');
+    const chartsEl = document.getElementById('charts');
+
+    function toggleCharts() {
+        chartsEl.classList.toggle('collapsed');
+        chartsHeader.classList.toggle('collapsed');
+
+        const isCollapsed = chartsEl.classList.contains('collapsed');
+        chartsHeader.setAttribute('aria-expanded', String(!isCollapsed));
+        sessionStorage.setItem('chartsCollapsed', isCollapsed);
+    }
+
+    chartsHeader.addEventListener('click', toggleCharts);
+
+    chartsHeader.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            toggleCharts();
+        }
     });
 
     // Table column sorting

@@ -43,12 +43,16 @@ function formatDuration(minutes) {
 }
 
 /**
- * Format currency with 2 decimals
+ * Format currency with Indian numbering system (lakhs/crores)
  * @param {number} amount - Amount in INR
- * @returns {string} Formatted currency string
+ * @returns {string} Formatted currency string with ₹ and Indian digit grouping
  */
 function formatCurrency(amount) {
-    return `₹${amount.toFixed(2)}`;
+    const formatted = amount.toLocaleString('en-IN', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+    });
+    return `₹${formatted}`;
 }
 
 /**
@@ -194,35 +198,25 @@ function renderTableRows(transactions, page) {
 }
 
 /**
- * Render totals row
+ * Update table heading and totals display
  * @param {Object} totals - Totals object from calculateTotals
  */
-function renderTotalsRow(totals) {
-    const tfoot = document.getElementById('table-footer');
-    tfoot.innerHTML = '';
+function updateTableHeadingAndTotals(totals) {
+    const headingEl = document.getElementById('table-heading');
+    const totalsEl = document.getElementById('table-totals');
 
-    const row = document.createElement('tr');
-    row.innerHTML = `
-        <td>${totals.count} transactions</td>
-        <td colspan="4"></td>
-        <td>${formatDuration(totals.avgDuration)}</td>
-        <td></td>
-        <td>${totals.totalUnits.toFixed(2)}</td>
-        <td></td>
-        <td>${formatCurrency(totals.totalNetRevenue)}</td>
-        <td>${formatCurrency(totals.totalGrossRevenue)}</td>
-    `;
+    headingEl.textContent = `${totals.count} Transaction${totals.count !== 1 ? 's' : ''}`;
 
-    tfoot.appendChild(row);
-}
+    if (totals.count === 0) {
+        totalsEl.textContent = '';
+        return;
+    }
 
-/**
- * Update table count display
- * @param {number} count - Number of transactions
- */
-function updateTableCount(count) {
-    const countEl = document.getElementById('table-count');
-    countEl.textContent = `${count} transaction${count !== 1 ? 's' : ''}`;
+    totalsEl.innerHTML =
+        `Avg Duration: ${formatDuration(totals.avgDuration)}, ` +
+        `Total Units: ${totals.totalUnits.toFixed(2)} kWh, ` +
+        `Total Net Revenue: <strong>${formatCurrency(totals.totalNetRevenue)}</strong>, ` +
+        `Total Gross Revenue: <strong>${formatCurrency(totals.totalGrossRevenue)}</strong>`;
 }
 
 /**
@@ -278,10 +272,9 @@ export function renderTable(transactions) {
 
     // Calculate and render totals (for all filtered transactions, not just current page)
     const totals = calculateTotals(transactions);
-    renderTotalsRow(totals);
+    updateTableHeadingAndTotals(totals);
 
     // Update UI elements
-    updateTableCount(transactions.length);
     updatePagination(transactions.length, currentPage);
     updateSortIndicators(currentSort.column, currentSort.direction);
 }

@@ -340,12 +340,68 @@ body {
 /* Charts Section
    ========================================================================== */
 
+/* Charts Header with Collapse Toggle */
+#charts-section-wrapper {
+    margin-bottom: var(--spacing-xl);
+}
+
+.charts-header {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    padding: var(--spacing-lg);
+    background-color: var(--color-bg);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    margin-bottom: var(--spacing-md);
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.2s;
+}
+
+.charts-header:hover {
+    background-color: var(--color-bg-alt);
+}
+
+.charts-header:focus {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+.charts-header h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-text);
+    margin: 0;
+}
+
+.charts-header .chevron {
+    color: var(--color-primary);
+    font-size: 1rem;
+    line-height: 1;
+    transition: transform 0.3s ease;
+    display: inline-block;
+}
+
+.charts-header.collapsed .chevron {
+    transform: rotate(-90deg);
+}
+
 /* Default: Single column layout for screens < 1000px */
 .charts {
     display: grid;
     grid-template-columns: 1fr;
     gap: var(--spacing-lg);
-    margin-bottom: var(--spacing-xl);
+    transition:
+        opacity 0.3s ease,
+        max-height 0.3s ease;
+    overflow: hidden;
+}
+
+.charts.collapsed {
+    max-height: 0;
+    opacity: 0;
+    margin: 0;
 }
 
 .chart-container {
@@ -364,6 +420,40 @@ body {
 
 .chart-container canvas {
     max-height: 300px;
+}
+
+/* Totals Table (below pie chart) */
+.totals-table {
+    width: 100%;
+    margin-top: var(--spacing-lg);
+    border-top: 2px solid var(--color-border);
+    padding-top: var(--spacing-md);
+}
+
+.totals-table tbody tr {
+    border-bottom: 1px solid var(--color-border);
+}
+
+.totals-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+.totals-table td {
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: 0.9375rem;
+}
+
+.totals-table .totals-label {
+    font-weight: 600;
+    color: var(--color-text);
+    text-align: left;
+}
+
+.totals-table .totals-value {
+    font-weight: 700;
+    color: var(--color-primary);
+    text-align: right;
+    font-variant-numeric: tabular-nums;
 }
 
 /* Wide screens (>= 1000px): 2-column layout with stacked charts */
@@ -425,7 +515,10 @@ body {
 
 .table-info {
     color: var(--color-text-muted);
-    font-size: 0.875rem;
+    font-size: 0.8125rem;
+    text-align: right;
+    max-width: 60%;
+    line-height: 1.5;
 }
 
 .table-wrapper {
@@ -513,17 +606,6 @@ body {
 .transactions-table td:nth-child(10) {
     text-align: right;
     font-variant-numeric: tabular-nums;
-}
-
-/* Totals Row */
-.transactions-table tfoot tr {
-    background-color: #eff6ff;
-    border-top: 2px solid var(--color-primary);
-    font-weight: 600;
-}
-
-.transactions-table tfoot td {
-    padding: var(--spacing-md);
 }
 
 /* Table Controls & Pagination
@@ -621,6 +703,17 @@ body {
     .pagination {
         width: 100%;
         flex-direction: column;
+    }
+
+    .table-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-sm);
+    }
+
+    .table-info {
+        max-width: 100%;
+        text-align: left;
     }
 }
 
