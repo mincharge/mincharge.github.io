@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Mincharge Ventures - Analytics</title>
+
+        <!-- Prevent search engine indexing -->
+        <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+        <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+        <meta name="bingbot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+
+        <link rel="stylesheet" href="css/dashboard.css" />
+    </head>
+    <body>
+        <div class="container">
+            <!-- Header -->
+            <header class="header">
+                <h1>Mincharge Ventures</h1>
+                <p class="subtitle">
+                    <span class="caps">O</span>perations <span class="caps">T</span>racking,
+                    <span class="caps">M</span>onitoring and <span class="caps">AN</span>alytics (<span class="caps"
+                        >OTMAN</span
+                    >)
+                </p>
+                <p class="nav-links">
+                    <a href="index.html">Dashboard</a>
+                    <span class="nav-sep">|</span>
+                    <a href="analytics.html">Analytics</a>
+                </p>
+                <p class="last-update">Last Updated At: <span id="last-update-time">Loading...</span></p>
+            </header>
+
+            <!-- Loading State -->
+            <div id="loading" class="loading" hidden>
+                <div class="spinner"></div>
+                <p>Loading analytics data...</p>
+            </div>
+
+            <!-- Error State -->
+            <div id="error" class="error" hidden>
+                <p class="error-message"></p>
+            </div>
+
+            <!-- Charts Section -->
+            <div id="analytics-charts" hidden>
+                <div class="chart-container analytics-chart-full">
+                    <h2>Monthly Cumulative Trends</h2>
+                    <canvas id="monthly-trends-chart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <p>Copyright &copy; 2026 Mincharge Ventures</p>
+        </footer>
+
+        <!-- Chart.js from CDN -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+        <!-- Chart.js Data Labels Plugin -->
+        <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
+
+        <!-- Dashboard JavaScript Modules -->
+        <script type="module" src="js/data-loader.js"></script>
+        <script type="module" src="js/analytics.js"></script>
+    </body>
+</html>

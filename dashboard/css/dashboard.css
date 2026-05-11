@@ -107,6 +107,27 @@ body {
     font-style: italic;
 }
 
+.header .nav-links {
+    font-size: 0.875rem;
+    margin-bottom: var(--spacing-xs);
+}
+
+.header .nav-links a {
+    color: var(--color-primary);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s;
+}
+
+.header .nav-links a:hover {
+    color: var(--color-primary-hover);
+}
+
+.header .nav-links .nav-sep {
+    color: var(--color-text-muted);
+    margin: 0 var(--spacing-sm);
+}
+
 .header .last-update #last-update-time {
     font-weight: 600;
     color: var(--color-text);
@@ -420,6 +441,15 @@ body {
 
 .chart-container canvas {
     max-height: 300px;
+}
+
+/* Analytics full-width chart container */
+.analytics-chart-full {
+    max-width: 100%;
+}
+
+.analytics-chart-full canvas {
+    max-height: 450px;
 }
 
 /* Totals Table (below pie chart) */
