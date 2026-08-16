@@ -42,12 +42,141 @@
                 <p class="error-message"></p>
             </div>
 
-            <!-- Charts Section -->
-            <div id="analytics-charts" hidden>
-                <div class="chart-container analytics-chart-full">
-                    <h2>Monthly Cumulative Trends</h2>
-                    <canvas id="monthly-trends-chart"></canvas>
-                </div>
+            <!-- Analytics Content -->
+            <div id="analytics-content" hidden>
+                <!-- Section jump nav -->
+                <nav class="analytics-nav">
+                    <a href="#trends-section">Revenue &amp; Energy Trends</a>
+                    <a href="#congestion-section">Congestion &amp; Queueing</a>
+                </nav>
+
+                <!-- Revenue & Energy Trends Section -->
+                <section id="trends-section" class="analytics-section">
+                    <h2 class="section-title">Revenue &amp; Energy Trends</h2>
+                    <div class="chart-container analytics-chart-full">
+                        <h3>Monthly Cumulative Trends</h3>
+                        <canvas id="monthly-trends-chart"></canvas>
+                    </div>
+                </section>
+
+                <!-- Congestion & Queueing Analysis Section -->
+                <section id="congestion-section" class="analytics-section">
+                    <div class="section-header">
+                        <h2 class="section-title">Congestion &amp; Queueing Analysis</h2>
+                        <div class="congestion-controls">
+                            <label for="congestion-threshold">Queue detection window:</label>
+                            <select id="congestion-threshold" class="filter-input">
+                                <option value="2">Within 2 minutes</option>
+                                <option value="3" selected>Within 3 minutes</option>
+                                <option value="5">Within 5 minutes</option>
+                                <option value="10">Within 10 minutes</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <p class="methodology-note" id="congestion-methodology">Loading methodology...</p>
+
+                    <!-- KPI Cards -->
+                    <div class="kpi-grid">
+                        <div class="kpi-card">
+                            <span class="kpi-value" id="kpi-queued-sessions">0</span>
+                            <span class="kpi-label">Queued Sessions</span>
+                            <span class="kpi-sub" id="kpi-queued-rate"></span>
+                        </div>
+                        <div class="kpi-card">
+                            <span class="kpi-value" id="kpi-episode-count">0</span>
+                            <span class="kpi-label">Queueing Episodes</span>
+                            <span class="kpi-sub">2+ vehicles back-to-back</span>
+                        </div>
+                        <div class="kpi-card">
+                            <span class="kpi-value" id="kpi-busiest-charger">&mdash;</span>
+                            <span class="kpi-label">Busiest Connector</span>
+                            <span class="kpi-sub" id="kpi-busiest-charger-sub"></span>
+                        </div>
+                        <div class="kpi-card">
+                            <span class="kpi-value" id="kpi-longest-queue">&mdash;</span>
+                            <span class="kpi-label">Longest Queue Observed</span>
+                            <span class="kpi-sub" id="kpi-longest-queue-sub"></span>
+                        </div>
+                    </div>
+
+                    <!-- Congestion Charts -->
+                    <div class="congestion-charts">
+                        <div class="chart-container">
+                            <h3>Queued Sessions by Station</h3>
+                            <canvas id="congestion-station-chart"></canvas>
+                        </div>
+                        <div class="chart-container">
+                            <h3>Queueing by Hour of Day</h3>
+                            <canvas id="congestion-hour-chart"></canvas>
+                        </div>
+                        <div class="chart-container">
+                            <h3>Weekly Queueing Trend</h3>
+                            <canvas id="congestion-trend-chart"></canvas>
+                        </div>
+                        <div class="chart-container">
+                            <h3>Queue Depth Distribution</h3>
+                            <canvas id="congestion-depth-chart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Charger/Connector Ranking Table -->
+                    <div class="table-section">
+                        <div class="table-header">
+                            <h3>Charger/Connector Congestion Ranking</h3>
+                        </div>
+                        <div class="table-wrapper">
+                            <table class="transactions-table" id="charger-ranking-table">
+                                <thead>
+                                    <tr>
+                                        <th>Station</th>
+                                        <th>Charger/Connector</th>
+                                        <th>Sessions</th>
+                                        <th>Queued</th>
+                                        <th>Queue Rate</th>
+                                        <th>Max Queue Depth</th>
+                                        <th>Longest Episode</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="charger-ranking-body">
+                                    <!-- Populated by JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Queueing Incidents Table -->
+                    <div class="table-section">
+                        <div class="table-header">
+                            <h3 id="episodes-heading">Queueing Incidents</h3>
+                        </div>
+                        <div class="table-wrapper">
+                            <table class="transactions-table" id="episodes-table">
+                                <thead>
+                                    <tr>
+                                        <th data-sort="episodeStart" class="sortable">Start</th>
+                                        <th data-sort="station" class="sortable">Station</th>
+                                        <th data-sort="charger" class="sortable">Charger/Connector</th>
+                                        <th data-sort="depth" class="sortable">Vehicles Queued</th>
+                                        <th data-sort="spanMinutes" class="sortable">Duration</th>
+                                        <th data-sort="avgWaitMinutes" class="sortable">Avg Wait</th>
+                                        <th>Transaction IDs</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="episodes-body">
+                                    <!-- Populated by JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="table-controls">
+                            <div class="pagination">
+                                <button id="episodes-prev-page" class="btn btn-secondary" disabled>Previous</button>
+                                <span id="episodes-page-info" class="page-info">Page 1 of 1</span>
+                                <button id="episodes-next-page" class="btn btn-secondary" disabled>Next</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
             </div>
         </div>
 
@@ -63,6 +192,8 @@
 
         <!-- Dashboard JavaScript Modules -->
         <script type="module" src="js/data-loader.js"></script>
+        <script type="module" src="js/charts.js"></script>
+        <script type="module" src="js/congestion.js"></script>
         <script type="module" src="js/analytics.js"></script>
     </body>
 </html>

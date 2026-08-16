@@ -1,4 +1,5 @@
 import { initializeData } from './data-loader.js';
+import { DEFAULT_THRESHOLD_MINUTES, renderCongestionAnalysis, attachEpisodeTableHandlers } from './congestion.js';
 
 /**
  * Analytics Module
@@ -261,11 +262,11 @@ export function renderMonthlyTrendsChart(transactions) {
 async function initializeAnalytics() {
     const loadingEl = document.getElementById('loading');
     const errorEl = document.getElementById('error');
-    const chartsSection = document.getElementById('analytics-charts');
+    const contentEl = document.getElementById('analytics-content');
 
     loadingEl.hidden = false;
     errorEl.hidden = true;
-    chartsSection.hidden = true;
+    contentEl.hidden = true;
 
     try {
         // Load all data (no filtering on analytics page)
@@ -284,14 +285,27 @@ async function initializeAnalytics() {
             document.getElementById('last-update-time').textContent = formatted;
         }
 
-        // Render chart
+        // Render revenue/energy trends chart
         renderMonthlyTrendsChart(transactions);
+
+        // Render congestion & queueing analysis with the default threshold
+        const thresholdSelect = document.getElementById('congestion-threshold');
+        renderCongestionAnalysis(transactions, DEFAULT_THRESHOLD_MINUTES);
+
+        // Recompute congestion analysis whenever the threshold changes
+        thresholdSelect.addEventListener('change', () => {
+            const thresholdMinutes = Number(thresholdSelect.value);
+            renderCongestionAnalysis(transactions, thresholdMinutes);
+        });
+
+        // Wire up the queueing incidents table's sort/pagination controls (once)
+        attachEpisodeTableHandlers();
 
         // Show content
         loadingEl.hidden = true;
-        chartsSection.hidden = false;
+        contentEl.hidden = false;
 
-        console.log('Analytics chart rendered successfully');
+        console.log('Analytics page rendered successfully');
     } catch (error) {
         console.error('Failed to initialize analytics:', error);
         loadingEl.hidden = true;

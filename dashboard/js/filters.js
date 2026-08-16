@@ -13,15 +13,17 @@ export class FilterState {
         this.vendors = [...metadata.vendors]; // All vendors selected by default
         this.stations = [...metadata.stations]; // All stations selected by default
 
-        // Default: last 30 days (end = today 00:00:00, start = today - 30 days)
+        // Default: start = 1st of current month, end = tomorrow (00:00:00)
         const today = new Date();
         today.setHours(0, 0, 0, 0);
 
-        const thirtyDaysAgo = new Date(today);
-        thirtyDaysAgo.setDate(today.getDate() - 30);
+        const tomorrow = new Date(today);
+        tomorrow.setDate(today.getDate() + 1);
 
-        this.startTime = thirtyDaysAgo;
-        this.endTime = today;
+        const firstOfMonth = new Date(today.getFullYear(), today.getMonth(), 1, 0, 0, 0);
+
+        this.startTime = firstOfMonth;
+        this.endTime = tomorrow;
     }
 
     /**

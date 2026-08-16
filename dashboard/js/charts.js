@@ -4,15 +4,15 @@
  * Renders charts using Chart.js with consistent color mapping across all charts.
  */
 
-// Station color mapping (consistent across all charts)
-const STATION_COLORS = {
+// Station color mapping (consistent across all charts and pages)
+export const STATION_COLORS = {
     'Rajapalayam | Ananda Garden': '#3b82f6', // Blue
     'Hotel Rayas': '#10b981', // Green
     'Nagercoil, Thovalai | Carnival City': '#f59e0b', // Amber
 };
 
 // Fallback color palette for unknown stations
-const COLOR_PALETTE = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899'];
+export const COLOR_PALETTE = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899'];
 
 // Store chart instances for cleanup
 let chartInstances = {
@@ -27,7 +27,7 @@ let chartInstances = {
  * @param {number} index - Fallback index if station not in map
  * @returns {string} Color hex code
  */
-function getStationColor(station, index = 0) {
+export function getStationColor(station, index = 0) {
     return STATION_COLORS[station] || COLOR_PALETTE[index % COLOR_PALETTE.length];
 }
 
