@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-08-16T04:24:53.168897",
-  "total_transactions": 4694,
+  "generated_at": "2026-08-16T06:07:06.184322",
+  "total_transactions": 4701,
   "date_range": {
     "earliest": "2026-01-23T14:52:59",
     "latest": "2026-08-16T09:15:14"
@@ -16,8 +16,8 @@
     "Rajapalayam | Ananda Garden"
   ],
   "summary": {
-    "total_units_kwh": 82652.12,
-    "total_net_revenue": 2200824.19,
-    "total_gross_revenue": 2596972.19
+    "total_units_kwh": 82719.69,
+    "total_net_revenue": 2202445.87,
+    "total_gross_revenue": 2598885.78
   }
 }
