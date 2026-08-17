@@ -107,7 +107,7 @@ export function renderDailyRevenueChart(transactions) {
         },
         options: {
             responsive: true,
-            maintainAspectRatio: true,
+            maintainAspectRatio: false,
             plugins: {
                 legend: {
                     display: true,
@@ -189,7 +189,7 @@ export function renderHourlyUsageChart(transactions) {
         },
         options: {
             responsive: true,
-            maintainAspectRatio: true,
+            maintainAspectRatio: false,
             plugins: {
                 legend: {
                     display: false,
@@ -281,7 +281,7 @@ export function renderStationRevenueChart(transactions) {
         },
         options: {
             responsive: true,
-            maintainAspectRatio: true,
+            maintainAspectRatio: false,
             plugins: {
                 legend: {
                     display: true,

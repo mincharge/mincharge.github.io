@@ -18,9 +18,18 @@
  * - "Queued session": an eligible session that started within `thresholdMinutes`
  *   of the previous eligible session ending on the same connector (gap >= 0,
  *   i.e. not overlapping - overlapping sessions are a data anomaly on the same
- *   connector, since two vehicles cannot occupy one connector simultaneously).
+ *   connector, since two vehicles cannot occupy one connector simultaneously),
+ *   UNLESS it is the same customer/vehicle repeating (see below), in which case
+ *   it is not counted as queueing at all.
+ * - "Same customer/vehicle repeat": consecutive sessions on the same connector
+ *   sharing the same `customer_key` (a hashed customer+vehicle identity computed
+ *   at build time - see `scripts/build_dashboard_data.py`). A driver whose
+ *   session ends early and who immediately reconnects is not a queue of two
+ *   different vehicles; their combined occupancy is treated as continuous, and
+ *   only a *different* customer/vehicle arriving afterwards counts as queued.
  * - "Queue episode": a maximal run of 2+ consecutive eligible sessions on the
- *   same connector where every consecutive gap is within `thresholdMinutes`.
+ *   same connector where every consecutive gap is within `thresholdMinutes`
+ *   and each represents a different customer/vehicle (or unknown identity).
  *   The episode "depth" is the number of vehicles involved (the first vehicle
  *   was not queued; every subsequent vehicle in the run was).
  */
@@ -75,10 +84,25 @@ function countByKey(items, keyFn) {
 }
 
 /**
+ * Determine whether two transactions represent the same customer/vehicle,
+ * based on the hashed `customer_key` computed at build time. Returns false
+ * (i.e. "treat as different"/unknown) whenever either key is missing, which
+ * is the conservative default - the existing customer-unaware detection
+ * simply applies in that case.
+ * @param {Object} a - First transaction
+ * @param {Object} b - Second transaction
+ * @returns {boolean} True only if both have the same non-null customer_key
+ */
+function isSameCustomer(a, b) {
+    return Boolean(a.customer_key) && Boolean(b.customer_key) && a.customer_key === b.customer_key;
+}
+
+/**
  * Detect queue episodes across all connectors.
  * @param {Array} eligible - Eligible transactions (see isEligible)
  * @param {number} thresholdMinutes - Max gap (minutes) counted as queueing
- * @returns {Array} Array of episode objects
+ * @returns {{episodes: Array, sameCustomerExclusions: number}} Episodes and a
+ *   count of same-customer/vehicle repeats that were excluded from queueing
  */
 function buildEpisodes(eligible, thresholdMinutes) {
     const groups = new Map();
@@ -91,12 +115,19 @@ function buildEpisodes(eligible, thresholdMinutes) {
     });
 
     const episodes = [];
+    let sameCustomerExclusions = 0;
 
     groups.forEach(txns => {
         const sorted = [...txns].sort((a, b) => a.startDate - b.startDate);
 
         let chain = [sorted[0]];
         let waits = [];
+
+        // Tracks the connector's last known occupant for gap comparisons. This
+        // rolls forward through same-customer repeats without extending the
+        // queue chain, so a returning customer doesn't reset who's "in front".
+        let effectiveEnd = sorted[0].endDate;
+        let effectiveOccupant = sorted[0];
 
         const flush = () => {
             if (chain.length >= 2) {
@@ -105,23 +136,36 @@ function buildEpisodes(eligible, thresholdMinutes) {
         };
 
         for (let i = 1; i < sorted.length; i++) {
-            const prev = sorted[i - 1];
             const curr = sorted[i];
-            const gapMinutes = (curr.startDate - prev.endDate) / 60000;
+            const gapMinutes = (curr.startDate - effectiveEnd) / 60000;
 
             if (gapMinutes >= 0 && gapMinutes <= thresholdMinutes) {
-                chain.push(curr);
-                waits.push({ gapMinutes });
+                if (isSameCustomer(effectiveOccupant, curr)) {
+                    // Same customer/vehicle immediately reconnecting - not a queue.
+                    // Extend the occupancy without touching the chain.
+                    sameCustomerExclusions++;
+                    if (curr.endDate > effectiveEnd) {
+                        effectiveEnd = curr.endDate;
+                        effectiveOccupant = curr;
+                    }
+                } else {
+                    chain.push(curr);
+                    waits.push({ gapMinutes });
+                    effectiveEnd = curr.endDate;
+                    effectiveOccupant = curr;
+                }
             } else {
                 flush();
                 chain = [curr];
                 waits = [];
+                effectiveEnd = curr.endDate;
+                effectiveOccupant = curr;
             }
         }
         flush();
     });
 
-    return episodes;
+    return { episodes, sameCustomerExclusions };
 }
 
 /**
@@ -184,7 +228,8 @@ function extractQueuedSessions(episodes) {
  */
 export function analyzeCongestion(transactions, thresholdMinutes = DEFAULT_THRESHOLD_MINUTES) {
     const eligible = transactions.filter(isEligible);
-    const episodes = buildEpisodes(eligible, thresholdMinutes).sort((a, b) => b.episodeStart - a.episodeStart);
+    const { episodes: unsortedEpisodes, sameCustomerExclusions } = buildEpisodes(eligible, thresholdMinutes);
+    const episodes = unsortedEpisodes.sort((a, b) => b.episodeStart - a.episodeStart);
     const queuedSessions = extractQueuedSessions(episodes);
 
     const longestEpisode = episodes.reduce(
@@ -198,6 +243,7 @@ export function analyzeCongestion(transactions, thresholdMinutes = DEFAULT_THRES
         eligibleTransactions: eligible,
         eligibleCount: eligible.length,
         excludedCount: transactions.length - eligible.length,
+        sameCustomerExclusions,
         episodes,
         queuedSessions,
         queuedCount: queuedSessions.length,
@@ -442,6 +488,12 @@ function renderMethodologyNote(analysis) {
     }
 
     const windowLabel = `${analysis.thresholdMinutes} minute${analysis.thresholdMinutes === 1 ? '' : 's'}`;
+    const sameCustomerNote =
+        analysis.sameCustomerExclusions > 0
+            ? ` A further ${analysis.sameCustomerExclusions.toLocaleString('en-IN')} apparent back-to-back ` +
+              'session(s) were identified as the same customer/vehicle reconnecting (e.g. a short session ' +
+              'followed by an immediate restart) and were not counted as queueing.'
+            : '';
 
     el.innerHTML =
         'Detected when the same connector (charger + connector ID) at the same location starts a new ' +
@@ -450,7 +502,7 @@ function renderMethodologyNote(analysis) {
         'tracked independently since they can serve different vehicles at once. Based on ' +
         `${analysis.eligibleCount.toLocaleString('en-IN')} of ${analysis.totalTransactions.toLocaleString('en-IN')} ` +
         `total sessions; ${analysis.excludedCount.toLocaleString('en-IN')} session(s) with no energy delivered ` +
-        '(failed connections, test taps) were excluded as they do not reflect genuine demand.';
+        `(failed connections, test taps) were excluded as they do not reflect genuine demand.${sameCustomerNote}`;
 }
 
 /**
@@ -538,7 +590,7 @@ function renderCongestionByStationChart(analysis) {
         },
         options: {
             responsive: true,
-            maintainAspectRatio: true,
+            maintainAspectRatio: false,
             plugins: {
                 legend: { display: true, position: 'top' },
                 tooltip: {
@@ -608,7 +660,7 @@ function renderCongestionByHourChart(analysis) {
         },
         options: {
             responsive: true,
-            maintainAspectRatio: true,
+            maintainAspectRatio: false,
             plugins: {
                 legend: { display: false },
                 tooltip: {
@@ -662,7 +714,7 @@ function renderCongestionTrendChart(analysis) {
         data: { labels: weeks, datasets },
         options: {
             responsive: true,
-            maintainAspectRatio: true,
+            maintainAspectRatio: false,
             plugins: {
                 legend: { display: true, position: 'top' },
                 tooltip: { mode: 'index', intersect: false },
@@ -712,7 +764,7 @@ function renderQueueDepthChart(analysis) {
         },
         options: {
             responsive: true,
-            maintainAspectRatio: true,
+            maintainAspectRatio: false,
             plugins: {
                 legend: { display: false },
                 tooltip: {

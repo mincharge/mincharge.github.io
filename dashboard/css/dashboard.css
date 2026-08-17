@@ -382,6 +382,135 @@ body {
     text-decoration: underline;
 }
 
+/* Month Range Filter
+   ========================================================================== */
+
+.month-range-filter {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+    padding: var(--spacing-lg);
+    background-color: var(--color-bg);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    margin-bottom: var(--spacing-xl);
+}
+
+.month-range-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--spacing-md);
+}
+
+.month-range-label {
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: var(--color-text);
+    white-space: nowrap;
+}
+
+.month-stepper {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    background-color: var(--color-bg-alt);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-xs);
+}
+
+.month-stepper-btn {
+    width: 28px;
+    height: 28px;
+    border: none;
+    border-radius: var(--radius-sm);
+    background-color: var(--color-bg);
+    color: var(--color-primary);
+    font-size: 1.125rem;
+    font-weight: 700;
+    line-height: 1;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition:
+        background-color 0.2s,
+        color 0.2s;
+}
+
+.month-stepper-btn:hover:not(:disabled) {
+    background-color: var(--color-primary);
+    color: white;
+}
+
+.month-stepper-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.month-stepper-value {
+    min-width: 88px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: var(--color-text);
+    font-variant-numeric: tabular-nums;
+}
+
+.month-range-sep {
+    color: var(--color-text-muted);
+    font-weight: 600;
+}
+
+.month-range-summary {
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+    font-style: italic;
+}
+
+.month-range-presets {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+}
+
+.month-preset-btn {
+    padding: var(--spacing-xs) var(--spacing-md);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-size: 0.8125rem;
+    font-family: var(--font-sans);
+    cursor: pointer;
+    transition:
+        background-color 0.2s,
+        border-color 0.2s,
+        color 0.2s;
+}
+
+.month-preset-btn:hover {
+    border-color: var(--color-primary);
+}
+
+.month-preset-btn.active {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+    color: white;
+    font-weight: 600;
+}
+
+@media (max-width: 640px) {
+    .month-range-row {
+        gap: var(--spacing-sm);
+    }
+
+    .month-range-summary {
+        flex-basis: 100%;
+    }
+}
+
 .analytics-section {
     margin-bottom: var(--spacing-xl);
 }
@@ -501,8 +630,8 @@ body {
     color: var(--color-text);
 }
 
-.congestion-charts canvas {
-    max-height: 280px;
+.congestion-charts .chart-canvas {
+    height: 280px;
 }
 
 @media (min-width: 1000px) {
@@ -607,6 +736,29 @@ body {
     margin: 0;
 }
 
+/*
+ * Chart canvas wrapper
+ *
+ * Chart.js's `responsive: true` + `maintainAspectRatio: true` combo resizes
+ * the canvas based on its *parent's* rendered box. If the parent's height is
+ * itself derived from the canvas (e.g. via a CSS `max-height` on the canvas
+ * with no independently-sized wrapper), the two feed back into each other on
+ * every resize, producing an unstable, non-monotonic height as the window is
+ * resized (short at some widths, tall at others, with no consistent trend).
+ *
+ * The fix: give each canvas a wrapper with an explicit, fixed CSS height and
+ * `position: relative`, and let Chart.js run with `maintainAspectRatio: false`
+ * so it always fills that fixed box exactly, regardless of width.
+ */
+.chart-canvas {
+    position: relative;
+    height: 300px;
+}
+
+.chart-canvas-tall {
+    height: 450px;
+}
+
 .chart-container {
     background-color: var(--color-bg);
     padding: var(--spacing-lg);
@@ -621,17 +773,9 @@ body {
     color: var(--color-text);
 }
 
-.chart-container canvas {
-    max-height: 300px;
-}
-
 /* Analytics full-width chart container */
 .analytics-chart-full {
     max-width: 100%;
-}
-
-.analytics-chart-full canvas {
-    max-height: 450px;
 }
 
 /* Totals Table (below pie chart) */
@@ -678,27 +822,27 @@ body {
     }
 
     /* Daily Revenue: Left column, top row */
-    .chart-container:nth-child(1) {
+    .charts .chart-container:nth-child(1) {
         grid-column: 1;
         grid-row: 1;
     }
 
     /* Hourly Usage: Left column, bottom row */
-    .chart-container:nth-child(2) {
+    .charts .chart-container:nth-child(2) {
         grid-column: 1;
         grid-row: 2;
     }
 
     /* Station Pie Chart: Right column, span both rows */
-    .chart-container:nth-child(3) {
+    .charts .chart-container:nth-child(3) {
         grid-column: 2;
         grid-row: 1 / 3; /* Span from row 1 to row 3 (exclusive) */
     }
 
     /* Adjust height for column charts */
-    .chart-container:nth-child(1) canvas,
-    .chart-container:nth-child(2) canvas {
-        max-height: 250px;
+    .charts .chart-container:nth-child(1) .chart-canvas,
+    .charts .chart-container:nth-child(2) .chart-canvas {
+        height: 250px;
     }
 }
 

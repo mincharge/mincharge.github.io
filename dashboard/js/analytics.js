@@ -1,5 +1,6 @@
 import { initializeData } from './data-loader.js';
-import { DEFAULT_THRESHOLD_MINUTES, renderCongestionAnalysis, attachEpisodeTableHandlers } from './congestion.js';
+import { renderCongestionAnalysis, attachEpisodeTableHandlers } from './congestion.js';
+import { initMonthRangeFilter, filterTransactionsByMonthRange } from './month-range.js';
 
 /**
  * Analytics Module
@@ -184,7 +185,7 @@ export function renderMonthlyTrendsChart(transactions) {
         },
         options: {
             responsive: true,
-            maintainAspectRatio: true,
+            maintainAspectRatio: false,
             interaction: {
                 mode: 'index',
                 intersect: false,
@@ -269,7 +270,7 @@ async function initializeAnalytics() {
     contentEl.hidden = true;
 
     try {
-        // Load all data (no filtering on analytics page)
+        // Load all data - the month range filter below narrows what's displayed
         const { transactions, metadata } = await initializeData();
 
         console.log(`Loaded ${transactions.length} transactions for analytics`);
@@ -285,21 +286,30 @@ async function initializeAnalytics() {
             document.getElementById('last-update-time').textContent = formatted;
         }
 
-        // Render revenue/energy trends chart
-        renderMonthlyTrendsChart(transactions);
-
-        // Render congestion & queueing analysis with the default threshold
         const thresholdSelect = document.getElementById('congestion-threshold');
-        renderCongestionAnalysis(transactions, DEFAULT_THRESHOLD_MINUTES);
+        let currentRange = { start: null, end: null };
 
-        // Recompute congestion analysis whenever the threshold changes
-        thresholdSelect.addEventListener('change', () => {
-            const thresholdMinutes = Number(thresholdSelect.value);
-            renderCongestionAnalysis(transactions, thresholdMinutes);
+        // Re-render everything using the current month range + queue threshold
+        function renderAll() {
+            const filtered = filterTransactionsByMonthRange(transactions, currentRange);
+            renderMonthlyTrendsChart(filtered);
+            renderCongestionAnalysis(filtered, Number(thresholdSelect.value));
+        }
+
+        // Set up the month range filter (defaults to the full available range)
+        currentRange = initMonthRangeFilter(transactions, range => {
+            currentRange = range;
+            renderAll();
         });
+
+        // Recompute congestion analysis whenever the queue detection window changes
+        thresholdSelect.addEventListener('change', renderAll);
 
         // Wire up the queueing incidents table's sort/pagination controls (once)
         attachEpisodeTableHandlers();
+
+        // Initial render
+        renderAll();
 
         // Show content
         loadingEl.hidden = true;

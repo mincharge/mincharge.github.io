@@ -50,12 +50,50 @@
                     <a href="#congestion-section">Congestion &amp; Queueing</a>
                 </nav>
 
+                <!-- Month Range Filter (applies to both sections below) -->
+                <div class="month-range-filter" id="month-range-filter">
+                    <div class="month-range-row">
+                        <span class="month-range-label">Time Period:</span>
+
+                        <div class="month-stepper" id="start-month-stepper">
+                            <button type="button" class="month-stepper-btn" data-direction="-1" aria-label="Move start month earlier">
+                                &lsaquo;
+                            </button>
+                            <span class="month-stepper-value" id="start-month-value">&mdash;</span>
+                            <button type="button" class="month-stepper-btn" data-direction="1" aria-label="Move start month later">
+                                &rsaquo;
+                            </button>
+                        </div>
+
+                        <span class="month-range-sep">&ndash;</span>
+
+                        <div class="month-stepper" id="end-month-stepper">
+                            <button type="button" class="month-stepper-btn" data-direction="-1" aria-label="Move end month earlier">
+                                &lsaquo;
+                            </button>
+                            <span class="month-stepper-value" id="end-month-value">&mdash;</span>
+                            <button type="button" class="month-stepper-btn" data-direction="1" aria-label="Move end month later">
+                                &rsaquo;
+                            </button>
+                        </div>
+
+                        <span class="month-range-summary" id="month-range-summary"></span>
+                    </div>
+
+                    <div class="month-range-presets" id="month-range-presets">
+                        <button type="button" class="month-preset-btn" data-preset="3">Last 3 Months</button>
+                        <button type="button" class="month-preset-btn" data-preset="6">Last 6 Months</button>
+                        <button type="button" class="month-preset-btn" data-preset="12">Last 12 Months</button>
+                        <button type="button" class="month-preset-btn" data-preset="all">All Time</button>
+                    </div>
+                </div>
+
                 <!-- Revenue & Energy Trends Section -->
                 <section id="trends-section" class="analytics-section">
                     <h2 class="section-title">Revenue &amp; Energy Trends</h2>
                     <div class="chart-container analytics-chart-full">
                         <h3>Monthly Cumulative Trends</h3>
-                        <canvas id="monthly-trends-chart"></canvas>
+                        <div class="chart-canvas chart-canvas-tall"><canvas id="monthly-trends-chart"></canvas></div>
                     </div>
                 </section>
 
@@ -104,19 +142,19 @@
                     <div class="congestion-charts">
                         <div class="chart-container">
                             <h3>Queued Sessions by Station</h3>
-                            <canvas id="congestion-station-chart"></canvas>
+                            <div class="chart-canvas"><canvas id="congestion-station-chart"></canvas></div>
                         </div>
                         <div class="chart-container">
                             <h3>Queueing by Hour of Day</h3>
-                            <canvas id="congestion-hour-chart"></canvas>
+                            <div class="chart-canvas"><canvas id="congestion-hour-chart"></canvas></div>
                         </div>
                         <div class="chart-container">
                             <h3>Weekly Queueing Trend</h3>
-                            <canvas id="congestion-trend-chart"></canvas>
+                            <div class="chart-canvas"><canvas id="congestion-trend-chart"></canvas></div>
                         </div>
                         <div class="chart-container">
                             <h3>Queue Depth Distribution</h3>
-                            <canvas id="congestion-depth-chart"></canvas>
+                            <div class="chart-canvas"><canvas id="congestion-depth-chart"></canvas></div>
                         </div>
                     </div>
 
@@ -194,6 +232,7 @@
         <script type="module" src="js/data-loader.js"></script>
         <script type="module" src="js/charts.js"></script>
         <script type="module" src="js/congestion.js"></script>
+        <script type="module" src="js/month-range.js"></script>
         <script type="module" src="js/analytics.js"></script>
     </body>
 </html>
