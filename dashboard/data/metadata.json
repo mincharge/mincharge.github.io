@@ -1,23 +1,24 @@
 {
-  "generated_at": "2026-08-24T00:35:22.127879",
-  "total_transactions": 4912,
+  "generated_at": "2026-08-24T04:34:50.668475",
+  "total_transactions": 4917,
   "date_range": {
     "earliest": "2026-01-23T14:52:59",
-    "latest": "2026-08-24T05:20:16"
+    "latest": "2026-08-24T09:45:34"
   },
-  "latest_end_time": "2026-08-24T05:20:16",
+  "latest_end_time": "2026-08-24T09:45:34",
   "vendors": [
     "relux",
     "zeon"
   ],
   "stations": [
+    "End",
     "Hotel Rayas",
     "Nagercoil, Thovalai | Carnival City",
     "Rajapalayam | Ananda Garden"
   ],
   "summary": {
-    "total_units_kwh": 86525.32,
-    "total_net_revenue": 2305131.61,
-    "total_gross_revenue": 2720054.95
+    "total_units_kwh": 86566.91,
+    "total_net_revenue": 2306233.33,
+    "total_gross_revenue": 2721354.98
   }
 }
