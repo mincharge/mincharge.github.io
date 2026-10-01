@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-01T02:51:32.435327",
+  "generated_at": "2026-10-01T07:13:36.319661",
   "total_transactions": 6041,
   "date_range": {
     "earliest": "2026-01-23T14:52:59",
@@ -11,7 +11,6 @@
     "zeon"
   ],
   "stations": [
-    "End",
     "Hotel Rayas",
     "Nagercoil, Thovalai | Carnival City",
     "Rajapalayam | Ananda Garden"
